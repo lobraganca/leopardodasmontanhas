@@ -14,7 +14,7 @@ Lá o guia:
 - abre **datas** com número de vagas (0 = esgotado). Elas aparecem nos cards e na reserva. Expedição **sem data futura aparece automaticamente como "Em breve"**;
 - o campo **Distância (km)** posiciona a expedição no **mapa da serra** (quanto mais km, mais longe do acampamento) e aparece no carimbo do cartão-postal;
 - cadastra **vídeos de manejo** (cobras, escorpiões, sapos, aranhas, outros). Os vídeos são do próprio Bruno: suba os arquivos .mp4 (em pé, formato reels) na pasta **videos/** do repositório e, na aba Vídeos, escreva o nome (ex.: `videos/jararaca.mp4`). Também aceita link do Google Drive compartilhado. No site, o vídeo roda sem som no cartão e abre em tela cheia com som. Dica: vídeos de até ~30 MB carregam bem; uma capa (imagem) é opcional;
-- troca as **fotos das cachoeiras** (aba Fotos): suba as imagens na pasta **fotos/** e escreva o nome (ex.: `fotos/poco-azul.jpg`). As que vêm no site são ilustrações de exemplo, para trocar pelas fotos reais;
+- troca as **fotos das cachoeiras** (aba Fotos): suba as imagens na pasta **fotos/** e escreva o nome (ex.: `fotos/poco-azul.jpg`). As que vêm no site foram tiradas do Instagram do Bruno (resolução baixa): troque pelas originais quando tiver;
 - carrega o **trajeto GPX** de cada trilha (exportado do Wikiloc, Strava, AllTrails ou relógio). Quando pelo menos uma trilha tem GPX, aparece o botão **Mapa real** na seção Trilhas, com imagem de satélite e relevo;
 - troca o **WhatsApp** que recebe as reservas (já vem com (31) 99648-5236);
 - vê a **Fila de espera**: quem tocou em "Quero ser avisado" numa trilha sem data deixa nome, WhatsApp e quantas pessoas. Na aba, as pessoas aparecem separadas por trilha, na ordem em que entraram. O botão **Avisar** abre o WhatsApp da pessoa com a mensagem pronta (editável) e marca como avisado; **Avisar próximo** vai chamando um por um.
@@ -45,3 +45,7 @@ Logo, pôster do Bruno e os leopardos da logo já estão dentro do `index.html`.
    - Tipo **CNAME**, nome **www**, valor **cname.vercel-dns.com**
    Apague outro registro A ou CNAME "www" antigo que a GoDaddy tenha criado (o de "estacionamento").
 4. Espere a Vercel mostrar "Valid Configuration" (de minutos a algumas horas).
+
+
+## Tela de carregamento
+Coloque uma foto de leopardo (ou onça) com o nome `fotos/leopardo.jpg`: ela aparece na tela de abertura. Sem a foto, aparece a logo.
