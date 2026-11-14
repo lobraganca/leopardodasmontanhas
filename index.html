@@ -566,7 +566,7 @@ body::after{content:"";position:fixed;inset:-50%;z-index:200;pointer-events:none
 .fb-track{display:flex;width:max-content;animation:fbmove var(--d,40s) linear infinite;will-change:transform}
 .fb-track svg{display:block;flex:0 0 auto}
 @keyframes fbmove{to{transform:translateX(-50%)}}
-.fb-far{bottom:84px}.fb-mid{bottom:30px}.fb-ground{bottom:0}.fb-front{bottom:-6px;z-index:4}
+.fb-far{bottom:70px}.fb-mid{bottom:30px}.fb-ground{bottom:0}.fb-front{bottom:-6px;z-index:4}
 .fb-bruno{position:absolute;left:clamp(40px,24%,340px);bottom:4px;width:118px;z-index:3;animation:fbbob .45s ease-in-out infinite alternate}
 .fb-bruno svg{display:block;width:100%;height:auto;overflow:visible}
 @keyframes fbbob{to{transform:translateY(-3px)}}
@@ -603,7 +603,7 @@ body::after{content:"";position:fixed;inset:-50%;z-index:200;pointer-events:none
 .fb-bruno.stop .binoc{opacity:1}.fb-bruno.stop .ar1{opacity:0}
 .fb-bruno.stop,.fb-bruno.stop *{animation-play-state:paused!important}
 .fb-bruno.stop .lg1,.fb-bruno.stop .lg2,.fb-bruno.stop .ar2{transform:none!important;animation:none!important}
-@media (max-width:760px){.forestband{height:180px}.fb-bruno{width:92px;left:18%;bottom:4px}.fb-far{bottom:70px}.fb-mid{bottom:24px}.fb-say{font-size:18px;left:calc(18% + 84px);bottom:100px}}
+@media (max-width:760px){.forestband{height:180px}.fb-bruno{width:92px;left:18%;bottom:4px}.fb-far{bottom:56px}.fb-mid{bottom:24px}.fb-say{font-size:18px;left:calc(18% + 84px);bottom:100px}}
 @media (prefers-reduced-motion:reduce){.fb-track,.fb-bruno,.fb-bruno *{animation:none!important}}
 .split .w{display:inline-block;overflow:hidden;vertical-align:top;padding:.2em .02em .06em;margin:-.2em -.02em -.06em}
 .split .w > span{display:inline-block;transform:translateY(110%);transition:transform 1s cubic-bezier(.2,.8,.2,1)}
@@ -1232,8 +1232,8 @@ h2 em{font-style:normal}
 .sec{padding:52px 0!important}
 .sec-head{margin-bottom:18px!important;gap:16px!important}
 .sec h2{font-size:clamp(40px,5.4vw,76px)!important}
-.forestband{height:200px}
-@media (max-width:820px){.sec{padding:36px 0!important}.sec-head{margin-bottom:14px!important}.sec h2{font-size:clamp(34px,10vw,46px)!important}.forestband{height:170px}}
+.forestband{height:230px}
+@media (max-width:820px){.sec{padding:36px 0!important}.sec-head{margin-bottom:14px!important}.sec h2{font-size:clamp(34px,10vw,46px)!important}.forestband{height:190px}}
 /* ===== rodapé compacto ===== */
 footer .fwrap{grid-template-columns:auto 1fr 1fr!important;gap:22px 36px!important;padding-block:30px 22px!important;align-items:center}
 footer .f-brand{display:flex;align-items:center;gap:14px}
@@ -1271,6 +1271,74 @@ footer .f-col .f-plat{padding:8px 10px}
 .tm-sheet .pc-foot{flex-wrap:nowrap!important;gap:10px!important}
 .tm-sheet .pc-foot .btn{flex:1;min-width:0!important}
 @media (max-width:420px){.pc-arr button{width:40px;height:40px}.pc-arr span{display:none}}
+
+
+.rock{position:absolute;left:0;bottom:8px;z-index:3;pointer-events:none;filter:drop-shadow(0 4px 3px rgba(20,40,20,.3))}
+.rock svg{display:block}
+
+
+/* acentos em títulos com gradiente (Í, Ê, Ç) */
+.split em .w > span,h2 em{padding-top:.22em;margin-top:-.22em;padding-bottom:.06em;margin-bottom:-.06em}
+.split .w{padding-top:.3em!important;margin-top:-.3em!important}
+
+/* ===== botão na maquete ===== */
+.h3-go{display:inline-flex;align-items:center;gap:10px;margin-top:4px;padding:12px 18px;border-radius:999px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;font-weight:800;font-size:15px;text-decoration:none;box-shadow:0 14px 30px -18px rgba(0,0,0,.5);transition:background .2s,transform .2s;pointer-events:auto}
+.h3-go:hover{background:rgba(255,255,255,.3);transform:translateY(-2px)}
+.h3-go b{font-size:18px}
+.h3-go .dot{width:10px;height:10px;border-radius:50%;background:#F2C14E;box-shadow:0 0 0 0 rgba(242,193,78,.7);animation:dotp 1.8s infinite}
+.h3-go.has .dot{background:#5BE08F;box-shadow:0 0 0 0 rgba(91,224,143,.7)}
+@keyframes dotp{70%{box-shadow:0 0 0 10px rgba(242,193,78,0)}}
+@media (min-width:1000px){.h3-go{position:absolute;top:104px;left:69%;transform:translateX(-50%);margin:0;z-index:4}.h3-go:hover{transform:translate(-50%,-2px)}}
+@media (max-width:760px){.h3-go{padding:9px 14px;font-size:13.5px}}
+/* ===== saídas abertas em destaque ===== */
+.opn{margin:0 0 16px}
+.opn-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:10px}
+.opn-h b{font-family:var(--display);font-weight:900;font-size:24px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.opn-h b::before{content:"";width:10px;height:10px;border-radius:50%;background:#2E9A62;box-shadow:0 0 0 4px rgba(46,154,98,.2)}
+.opn-h a{font-weight:800;font-size:14px;color:#2E8A5C;text-decoration:none}
+.opn-l{display:flex;gap:10px;flex-wrap:wrap}
+.opn-c{display:flex;align-items:center;gap:12px;border:0;cursor:pointer;font:inherit;text-align:left;background:#0E2A2E;color:#fff;border-radius:18px;padding:10px 14px 10px 10px;box-shadow:0 14px 30px -18px rgba(14,42,46,.8);transition:transform .2s}
+.opn-c:hover{transform:translateY(-3px)}
+.opn-d{width:52px;height:56px;border-radius:12px;background:#F2C14E;color:#3A2A05;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1}
+.opn-d b{font-family:var(--display);font-weight:900;font-size:24px}.opn-d small{font-size:10.5px;font-weight:800;text-transform:uppercase}
+.opn-c strong{display:block;font-size:15px}.opn-c em{font-style:normal;display:block;font-size:12.5px;color:rgba(255,255,255,.7)}
+.opn-c .go{margin-left:6px;background:#2E9A62;border-radius:999px;padding:7px 12px;font-weight:800;font-size:13px}
+.opn-none{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;background:#fff;border-radius:16px;padding:12px 16px;box-shadow:inset 0 0 0 1px var(--line);font-size:14px;color:var(--ink-soft)}
+.opn-none a{font-weight:800;color:#2E8A5C;text-decoration:none}
+.pm-sign.open .ps-b{background:linear-gradient(180deg,#2E9A62,#237A4D)!important;box-shadow:0 0 0 3px rgba(91,224,143,.45),0 10px 18px -8px rgba(0,0,0,.5)}
+.pm-sign.open .ps-b i.op{background:#5BE08F;color:#06301A}
+@media (max-width:760px){.opn-l{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:0 -20px;padding:0 20px 4px}.opn-l::-webkit-scrollbar{display:none}.opn-c{flex:0 0 auto}}
+/* ===== página de trilhas ===== */
+body.pg-trilhas .top{color:var(--ink);background:rgba(255,255,255,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 1px 0 var(--line)}
+
+body.pg-trilhas main>*:not(#pg-trilhas){display:none!important}
+body.pg-trilhas .forestband,body.pg-trilhas .trail-side{display:none!important}
+.pgt{padding:110px 0 60px;min-height:80vh}
+.pgt-back{display:inline-block;margin-bottom:14px;font-weight:800;color:#2E8A5C;text-decoration:none}
+.pgt-f{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.pgt-f button{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:9px 14px;font:inherit;font-size:14px;font-weight:700;cursor:pointer}
+.pgt-f button[aria-pressed="true"]{background:#0E2A2E;border-color:#0E2A2E;color:#fff}
+.pgt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.tcard{display:flex;flex-direction:column;background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 24px 40px -30px rgba(14,42,46,.5),inset 0 0 0 1px var(--line)}
+.tcard.open{box-shadow:0 0 0 2.5px #2E9A62,0 24px 40px -26px rgba(14,42,46,.55)}
+.tcard .ta{position:relative;aspect-ratio:16/9}
+.tcard .ta svg{width:100%;height:100%;display:block}
+.tcard .tbadge{position:absolute;left:12px;top:12px;background:#2E9A62;color:#fff;font-weight:800;font-size:12px;padding:5px 10px;border-radius:999px;box-shadow:0 6px 14px -6px rgba(0,0,0,.5)}
+.tcard .tbadge.soon{background:#F2C14E;color:#3A2A05}
+.tcard .tkm{position:absolute;right:12px;bottom:10px;font-family:var(--display);font-weight:900;font-size:34px;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.5)}
+.tcard .tb{padding:16px 18px 18px;display:flex;flex-direction:column;gap:10px;flex:1}
+.tcard h3{font-family:var(--display);font-weight:900;font-size:28px;line-height:.95;text-transform:uppercase;margin:0}
+.tcard p{margin:0;color:var(--ink-soft);font-size:14px}
+.tcard .tf{display:flex;flex-wrap:wrap;gap:6px}
+.tcard .tf span{background:#F1ECDF;border-radius:999px;padding:5px 10px;font-size:12.5px;font-weight:700}
+.tcard .td{display:flex;flex-wrap:wrap;gap:6px}
+.tcard .td button{border:1.5px solid #2E9A62;background:#EFF8F2;color:#1F6B44;border-radius:10px;padding:7px 10px;font:inherit;font-size:13px;font-weight:800;cursor:pointer}
+.tcard .td button:disabled{opacity:.45;cursor:default;border-color:var(--line);background:#fff;color:var(--ink-soft)}
+.tcard .tb .btn{margin-top:auto;justify-content:center}
+.pgt-cta{margin-top:26px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;background:#0E2A2E;color:#fff;border-radius:20px;padding:18px 22px}
+.pgt-cta b{font-size:17px}
+@media (max-width:980px){.pgt-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:640px){.pgt-grid{grid-template-columns:1fr}.pgt{padding-top:90px}}
 
 /* ===== reserva: três bilhetes ===== */
 .tix{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:26px}
@@ -1547,6 +1615,7 @@ footer .credit .wrap{display:flex!important;flex-direction:column;align-items:ce
       <p class="tag-l"><b>Trilhas</b>e cachoeiras com guia</p>
       <h1><span>Leopardos</span><span class="g">das montanhas</span></h1>
       <p class="hero-sub">Crie seu grupo, escolha quem vai com você e acompanhe a turma subir a trilha com o Bruno, quilômetro por quilômetro.</p>
+      <a class="h3-go" href="/trilhas" data-pg="trilhas"><span class="dot"></span><span id="h3go-t">Ver as trilhas</span><b>→</b></a>
     </div>
   </div>
   <div class="h3-dock" id="grp">
@@ -1612,6 +1681,7 @@ footer .credit .wrap{display:flex!important;flex-direction:column;align-items:ce
       <div><p class="tag-l"><b>02</b>Trilhas</p><h2>Trilhas <em>disponíveis.</em></h2></div>
       <p>Escolha uma trilha no mapa (ou nos botões) e reserve direto pelo WhatsApp. As que ainda não têm data aparecem como “em breve”: deixe seu contato e seja avisado.</p>
     </div>
+    <div class="opn rv" id="opn"></div>
     <div class="cross2 rv" id="cross">
       <div class="tm-chips" id="tm-chips" role="group" aria-label="Escolher trilha" hidden></div>
       <div class="tm-frame" id="tm-frame">
@@ -1662,7 +1732,7 @@ footer .credit .wrap{display:flex!important;flex-direction:column;align-items:ce
   <div class="wrap">
     <div class="sec-head rv">
       <div><p class="tag-l"><b>03</b>Cachoeiras</p><h2>Água gelada, <em>pedra quente.</em></h2></div>
-      <p>Alguns dos poços e quedas onde o Bruno leva os grupos. Toque numa foto para ver grande.</p>
+      <p>Alguns dos poços e quedas aonde o Bruno leva os grupos. Toque numa foto para ampliar.</p>
     </div>
     <div class="gal rv" id="gal"></div>
     <div class="when rv" id="when">
@@ -1698,7 +1768,7 @@ footer .credit .wrap{display:flex!important;flex-direction:column;align-items:ce
           <li><b>Trilha é trilha</b><span>Nada de atalho, pisar em nascente ou arrancar planta.</span></li>
           <li><b>Grupo pequeno</b><span>Menos barulho e menos impacto: a mata agradece e os bichos aparecem.</span></li>
         </ul>
-        <p class="eco-safe"><b>E a segurança?</b> Ritmo do grupo, previsão conferida na véspera (com risco de cabeça d'água a data muda) e kit de primeiros socorros em toda saída.</p>
+        <p class="eco-safe"><b>E a segurança?</b> Ritmo do grupo, previsão conferida na véspera (se houver risco de cabeça d'água, a data muda) e kit de primeiros socorros em toda saída.</p>
       </div>
     </div>
   </div>
@@ -1742,15 +1812,15 @@ footer .credit .wrap{display:flex!important;flex-direction:column;align-items:ce
 
 <section class="sec" id="duvidas">
   <div class="wrap faq-grid">
-    <div class="rv"><p class="tag-l"><b>06</b>Dúvidas</p><h2 style="font-size:clamp(46px,6vw,84px)">Antes de calçar a bota.</h2><p class="help" style="margin-top:16px">Ficou alguma? <a class="contact-link" target="_blank" rel="noopener" style="color:var(--fern);font-weight:700">Chama os guias.</a></p></div>
+    <div class="rv"><p class="tag-l"><b>06</b>Dúvidas</p><h2 style="font-size:clamp(46px,6vw,84px)">Antes de calçar a bota.</h2><p class="help" style="margin-top:16px">Ficou com alguma dúvida? <a class="contact-link" target="_blank" rel="noopener" style="color:var(--fern);font-weight:700">Chame o Bruno.</a></p></div>
     <div class="rv">
-      <details><summary>Nunca fiz trilha. Posso ir?</summary><p>Pode, sim. Comece por uma expedição leve e conte no passe como está seu preparo. Os guias ajustam o ritmo e indicam a melhor opção.</p></details>
-      <details><summary>Preciso saber nadar para as cachoeiras?</summary><p>Não é obrigatório. Muitos poços têm parte rasa e ninguém entra na água sem querer. Avise nas observações para os guias orientarem onde é seguro.</p></details>
-      <details><summary>Tem idade mínima?</summary><p>Depende da trilha. Crianças podem ir nas expedições leves, sempre com um responsável. Informe a idade delas na reserva.</p></details>
+      <details><summary>Nunca fiz trilha. Posso ir?</summary><p>Pode, sim. Comece por uma trilha leve e conte na reserva como está o seu preparo. O Bruno ajusta o ritmo e indica a melhor opção.</p></details>
+      <details><summary>Preciso saber nadar para as cachoeiras?</summary><p>Não é obrigatório. Muitos poços têm parte rasa e ninguém entra na água sem querer. Avise ao reservar, para o Bruno orientar onde é seguro entrar.</p></details>
+      <details><summary>Tem idade mínima?</summary><p>Depende da trilha. Crianças podem ir nas trilhas leves, sempre com um responsável. Informe a idade delas na reserva.</p></details>
       <details><summary>O que levar na mochila?</summary><div class="packl" id="pack"></div></details>
       <details><summary>E se chover no dia?</summary><p>Segurança vem primeiro. Se a previsão indicar risco, a saída é remarcada e vocês combinam a nova data pelo WhatsApp.</p></details>
-      <details><summary>Como funciona o pagamento?</summary><p>Valores, formas de pagamento e o que está incluso (transporte, lanche, seguro) são enviados por escrito antes de você confirmar a vaga.</p></details>
-      <details><summary>Fazem grupos fechados e saídas para empresas?</summary><p>Sim. Marque "grupo fechado" no passe e diga quantas pessoas são. Dá para montar uma expedição sob medida para família, amigos ou equipe.</p></details>
+      <details><summary>Como funciona o pagamento?</summary><p>Valores, formas de pagamento e o que está incluído (transporte, lanche, seguro) são enviados por escrito antes de você confirmar a vaga.</p></details>
+      <details><summary>Fazem grupos fechados e saídas para empresas?</summary><p>Sim. Use a seção Guia particular e diga quantas pessoas são. Dá para montar uma trilha sob medida para família, amigos, empresa ou escola.</p></details>
     </div>
   </div>
 </section>
@@ -1798,6 +1868,15 @@ footer .credit .wrap{display:flex!important;flex-direction:column;align-items:ce
     </div>
   </div>
 </section></div>
+<section class="pgt" id="pg-trilhas" hidden>
+  <div class="wrap">
+    <a class="pgt-back" href="/" data-pg="home">← Voltar ao início</a>
+    <div class="sec-head"><div><p class="tag-l"><b>★</b>Trilhas</p><h2>Escolha sua <em>trilha.</em></h2></div><p>Primeiro as trilhas com saída aberta. As outras ainda vão ganhar data: entre na fila de espera e o Bruno te avisa.</p></div>
+    <div class="pgt-f" id="pgt-f" role="group" aria-label="Filtrar trilhas"></div>
+    <div class="pgt-grid" id="pgt-grid"></div>
+    <div class="pgt-cta"><b>Quer uma trilha só para o seu grupo?</b><a class="btn btn-amber" href="/#particular" data-pg="particular">Pedir guia particular</a></div>
+  </div>
+</section>
 </main>
 
 <footer>
@@ -2222,7 +2301,7 @@ function initTrail3D(){var box=$("tmap"),cv=$("tm3");if(!box||!cv||!window.THREE
       var hg=new T.TubeGeometry(cu,160,.75,8,false),hm=new T.Mesh(hg,new T.MeshBasicMaterial({color:0xF2C14E}));hm.visible=false;grp.add(hm);
       var end=surf(p[0],p[1],0),post=new T.Mesh(new T.CylinderGeometry(.35,.4,6,8),new T.MeshStandardMaterial({color:0x7A5636,roughness:.9}));post.position.copy(end).add(new T.Vector3(0,3,0));post.castShadow=true;grp.add(post);
       routes.push({base:tm,hi:hm,curve:cu,n:hg.index.count});dests.push(end.clone().add(new T.Vector3(0,6.4,0)));
-      var km=kmOf(t),up=upcoming(t).length;h+='<button type="button" class="tm-dest pm-sign'+(i===CROSS.i?" on":"")+'" data-pi="'+i+'" aria-label="'+esc(t.nome)+'"><span class="ps-b">'+(km!=null?'<b>'+fmtKm(km)+' km</b>':'')+'<span>'+esc(t.nome)+'</span>'+(up?'':'<i>em breve</i>')+'</span><span class="ps-p"></span></button>'});
+      var km=kmOf(t),up=upcoming(t).filter(function(x){return +x.vagas!==0}).length;h+='<button type="button" class="tm-dest pm-sign'+(i===CROSS.i?" on":"")+(up?" open":"")+'" data-pi="'+i+'" aria-label="'+esc(t.nome)+'"><span class="ps-b">'+(km!=null?'<b>'+fmtKm(km)+' km</b>':'')+'<span>'+esc(t.nome)+'</span>'+(up?'<i class="op">saída aberta</i>':'<i>em breve</i>')+'</span><span class="ps-p"></span></button>'});
     h+='<span class="tm-camp" id="tm3-camp">acampamento base</span>';lab.innerHTML=h;campEl=$("tm3-camp");
     if(!$("pm-hint").classList.contains("off"))lab.querySelectorAll(".pm-sign").forEach(function(x){x.classList.add("pulse")});sel(CROSS.i,false)}
   var walker=new T.Mesh(new T.SphereGeometry(1.3,16,12),new T.MeshStandardMaterial({color:0xF2C14E,emissive:0x5a3c00,roughness:.5}));walker.castShadow=true;scene.add(walker);
@@ -2894,23 +2973,32 @@ var LPS_SRC=(typeof LPS_IMG!=="undefined")?LPS_IMG:"";
   function tile(fn,w,h){var o=fn(w,h);return '<svg width="'+w+'" height="'+h+'" viewBox="0 0 '+w+' '+h+'">'+o+'</svg>'}
   function fill(id,fn,w,h){var t=tile(fn,w,h);document.getElementById(id).innerHTML=t+t}
   var mob=window.innerWidth<760;
-  // morros e serra ao fundo
-  fill("fb-far",function(w,h){var p="M0 "+h;for(var x=0;x<=w;x+=40){p+=" L"+x+" "+(h-40-Math.sin(x/170)*26-Math.sin(x/61+1)*12)}p+=" L"+w+" "+h+"Z";
-    var p2="M0 "+h;for(x=0;x<=w;x+=40){p2+=" L"+x+" "+(h-22-Math.sin(x/120+2)*16)}p2+=" L"+w+" "+h+"Z";
-    var o='<path d="'+p+'" fill="#B9D6CC"/><path d="'+p2+'" fill="#A6CDBC"/>';
-    o+='<path d="M'+(w*.62)+' '+(h-58)+' l3 40" stroke="#fff" stroke-width="4" opacity=".85"/>';return o},1600,110);
-  // mata fechada: duas camadas de árvores bem juntas
-  function trees(w,h,n,cols,seed,sz){var o="";for(var i=0;i<n;i++){var x=i*(w/n)+R(i+seed)*24,s=sz*(.75+R(i+seed+5)*.6),c=cols[i%cols.length];
-      if(R(i+seed+9)>.5){o+='<path d="M'+x+' '+(h-4)+'v-'+(18*s)+'" stroke="#5C4A36" stroke-width="'+(4*s)+'"/><path d="M'+(x-24*s)+' '+(h-12*s)+'L'+x+' '+(h-92*s)+'L'+(x+24*s)+' '+(h-12*s)+'Z" fill="'+c+'"/><path d="M'+(x-17*s)+' '+(h-46*s)+'L'+x+' '+(h-108*s)+'L'+(x+17*s)+' '+(h-46*s)+'Z" fill="'+c+'"/>'}
-      else{o+='<path d="M'+x+' '+(h-4)+'v-'+(28*s)+'" stroke="#5C4A36" stroke-width="'+(5*s)+'"/><circle cx="'+x+'" cy="'+(h-50*s)+'" r="'+(26*s)+'" fill="'+c+'"/><circle cx="'+(x+16*s)+'" cy="'+(h-36*s)+'" r="'+(18*s)+'" fill="'+c+'"/><circle cx="'+(x-16*s)+'" cy="'+(h-34*s)+'" r="'+(17*s)+'" fill="'+c+'"/>'}}return o}
-  fill("fb-mid",function(w,h){var o='<rect y="'+(h-60)+'" width="'+w+'" height="60" fill="#3F7F5C"/>'+trees(w,h-30,46,["#3E8460","#357652","#4A9068"],7,1.15)+trees(w,h,58,["#5FA67C","#4E9670","#6BB386","#58A076"],33,1);
-    for(var i=0;i<14;i++){var x=R(i+70)*w;o+='<path d="M'+x+' '+h+'c-8-30 6-60 22-80" stroke="#2F6E4C" stroke-width="3" fill="none"/>'}return o},1800,150);
-  fill("fb-ground",function(w,h){var o='<rect y="'+(h-46)+'" width="'+w+'" height="46" fill="#6FB386"/><path d="M0 '+(h-26)+' Q'+w/4+' '+(h-34)+' '+w/2+' '+(h-26)+' T'+w+' '+(h-26)+'V'+(h-12)+' Q'+(w*.75)+' '+(h-4)+' '+w/2+' '+(h-12)+' T0 '+(h-12)+'Z" fill="#E6D3AE"/>';
-    for(var i=0;i<26;i++){var x=R(i+120)*w,s2=.6+R(i+130)*.6;o+='<g transform="translate('+x.toFixed(0)+' '+(h-40)+') scale('+s2.toFixed(2)+')"><path d="M0 0c-14-10-20-26-18-40M0 0c10-12 22-22 30-34M0 0c-2-16 2-34 8-46" stroke="'+(i%2?"#3B8E60":"#2E7A52")+'" stroke-width="5" fill="none" stroke-linecap="round"/></g>'}
-    for(i=0;i<70;i++){var gx=R(i+40)*w;o+='<path d="M'+gx+' '+(h-44)+'l-3 -9M'+gx+' '+(h-44)+'l1 -11M'+gx+' '+(h-44)+'l5 -8" stroke="#4E9670" stroke-width="2" stroke-linecap="round"/>'}
+  // serra ao fundo: pedra e capim dourado, com névoa (como a maquete)
+  fill("fb-far",function(w,h){
+    function ridge(base,amp,f1,f2,ph){var p="M0 "+h;for(var x=0;x<=w;x+=20){var y=base-Math.abs(Math.sin(x/f1+ph))*amp-Math.sin(x/f2+ph*2)*amp*.25;p+=" L"+x+" "+y.toFixed(1)}return p+" L"+w+" "+h+"Z"}
+    var o='<defs><linearGradient id="fbm1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#B7B0A0"/><stop offset=".45" stop-color="#A9A07A"/><stop offset="1" stop-color="#8FA58A"/></linearGradient>'+
+      '<linearGradient id="fbm2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9C9373"/><stop offset=".4" stop-color="#8E8A5C"/><stop offset="1" stop-color="#5E7E55"/></linearGradient>'+
+      '<linearGradient id="fbhz" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E4EFEA" stop-opacity="0"/><stop offset="1" stop-color="#DDEAE3" stop-opacity=".75"/></linearGradient></defs>';
+    o+='<path d="'+ridge(h-60,70,260,90,.4)+'" fill="url(#fbm1)" opacity=".75"/>';
+    for(var k=0;k<9;k++){var rx=R(k+300)*w,ry=h-70-R(k+310)*40;o+='<path d="M'+rx.toFixed(0)+' '+ry.toFixed(0)+'l'+(10+R(k)*14).toFixed(0)+' -'+(8+R(k+1)*10).toFixed(0)+'l'+(14+R(k+2)*12).toFixed(0)+' '+(12+R(k+3)*8).toFixed(0)+'z" fill="#8C8270" opacity=".55"/>'}
+    o+='<rect width="'+w+'" height="'+h+'" fill="url(#fbhz)"/>';
+    o+='<path d="'+ridge(h-30,52,200,70,1.7)+'" fill="url(#fbm2)"/>';
+    for(k=0;k<14;k++){var px=R(k+400)*w,py=h-38-R(k+410)*26;o+='<path d="M'+px.toFixed(0)+' '+py.toFixed(0)+'l6 -10l8 2l5 9z" fill="#7A7462" opacity=".7"/>'}
+    o+='<path d="M'+(w*.62)+' '+(h-70)+' l2 46" stroke="#EAF6F6" stroke-width="3" opacity=".8"/>';return o},1600,190);
+  // mata fechada e realista: copas com luz e sombra (paleta da maquete)
+  var TG=["#2E5A2E","#35643A","#3E6E35","#2A4F33","#4A7438","#3B5F2C","#567C3A"];
+  function crown(x,y,r,c,id){return '<g><circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+r.toFixed(1)+'" fill="'+c+'"/><circle cx="'+(x-r*.25).toFixed(1)+'" cy="'+(y-r*.28).toFixed(1)+'" r="'+(r*.62).toFixed(1)+'" fill="#fff" opacity=".10"/><path d="M'+(x-r).toFixed(1)+' '+y.toFixed(1)+'a'+r.toFixed(1)+' '+r.toFixed(1)+' 0 0 0 '+(2*r).toFixed(1)+' 0" fill="#0b2614" opacity=".22"/></g>'}
+  function trees(w,h,n,seed,sz,dark){var o="";for(var i=0;i<n;i++){var x=i*(w/n)+R(i+seed)*24,s=sz*(.75+R(i+seed+5)*.6),c=TG[Math.floor(R(i+seed+3)*TG.length)];if(dark)c=mixHex(c.slice(1),"1E3A24",.35);
+      if(R(i+seed+9)>.55){o+='<path d="M'+x+' '+(h-4)+'v-'+(18*s)+'" stroke="#4A3828" stroke-width="'+(4*s)+'"/><path d="M'+(x-22*s)+' '+(h-12*s)+'L'+x+' '+(h-96*s)+'L'+(x+22*s)+' '+(h-12*s)+'Z" fill="'+c+'"/><path d="M'+x+' '+(h-96*s)+'L'+(x+22*s)+' '+(h-12*s)+'H'+(x+4*s)+'Z" fill="#0b2614" opacity=".25"/>'}
+      else{o+='<path d="M'+x+' '+(h-4)+'v-'+(30*s)+'" stroke="#4A3828" stroke-width="'+(5*s)+'"/>'+crown(x+14*s,h-36*s,17*s,c)+crown(x-14*s,h-34*s,16*s,c)+crown(x,h-52*s,25*s,c)}}return o}
+  fill("fb-mid",function(w,h){var o='<rect y="'+(h-60)+'" width="'+w+'" height="60" fill="#2C4A2C"/>'+trees(w,h-22,40,7,.78,true)+trees(w,h,52,33,.7,false);
+    for(var i=0;i<14;i++){var x=R(i+70)*w;o+='<path d="M'+x+' '+h+'c-8-30 6-60 22-80" stroke="#24452C" stroke-width="3" fill="none"/>'}return o},1800,150);
+  fill("fb-ground",function(w,h){var o='<rect y="'+(h-46)+'" width="'+w+'" height="46" fill="#3F6534"/><path d="M0 '+(h-26)+' Q'+w/4+' '+(h-34)+' '+w/2+' '+(h-26)+' T'+w+' '+(h-26)+'V'+(h-12)+' Q'+(w*.75)+' '+(h-4)+' '+w/2+' '+(h-12)+' T0 '+(h-12)+'Z" fill="#E6D3AE"/>';
+    for(var i=0;i<26;i++){var x=R(i+120)*w,s2=.6+R(i+130)*.6;o+='<g transform="translate('+x.toFixed(0)+' '+(h-40)+') scale('+s2.toFixed(2)+')"><path d="M0 0c-14-10-20-26-18-40M0 0c10-12 22-22 30-34M0 0c-2-16 2-34 8-46" stroke="'+(i%2?"#35643A":"#2A4F33")+'" stroke-width="5" fill="none" stroke-linecap="round"/></g>'}
+    for(i=0;i<70;i++){var gx=R(i+40)*w;o+='<path d="M'+gx+' '+(h-44)+'l-3 -9M'+gx+' '+(h-44)+'l1 -11M'+gx+' '+(h-44)+'l5 -8" stroke="#567C3A" stroke-width="2" stroke-linecap="round"/>'}
     return o},2000,150);
   fill("fb-front",function(w,h){var o="";for(var i=0;i<11;i++){var x=40+i*(w/11)+R(i+90)*60,s=.8+R(i+70)*.5;
-      for(var k=-3;k<=3;k++){o+='<path d="M'+x+' '+h+' Q'+(x+k*14*s)+' '+(h-50*s)+' '+(x+k*28*s)+' '+(h-(40-Math.abs(k)*6)*s)+'" stroke="'+(i%2?"#2E7A52":"#3B8E60")+'" stroke-width="'+(7*s)+'" fill="none" stroke-linecap="round"/>'}}
+      for(var k=-3;k<=3;k++){o+='<path d="M'+x+' '+h+' Q'+(x+k*14*s)+' '+(h-50*s)+' '+(x+k*28*s)+' '+(h-(40-Math.abs(k)*6)*s)+'" stroke="'+(i%2?"#24452C":"#2E5A2E")+'" stroke-width="'+(7*s)+'" fill="none" stroke-linecap="round"/>'}}
     return o},2200,70);
   // mundo andando (controlado por JS para o Bruno poder parar)
   var band=document.querySelector(".forestband"),br=document.querySelector(".fb-bruno"),say=document.getElementById("fb-say"),crit=document.getElementById("fb-crit");
@@ -2945,6 +3033,13 @@ var LPS_SRC=(typeof LPS_IMG!=="undefined")?LPS_IMG:"";
   var crewEl=document.getElementById("fb-crew"),cnt=document.createElement("span");cnt.className="fb-count";cnt.hidden=true;band.appendChild(cnt);
   function renderCrew(){var C=window.__crew||[];crewEl.innerHTML=C.map(hiker).join("");cnt.hidden=!C.length;cnt.textContent=C.length?"Bruno + "+C.length+(C.length>1?" pessoas":" pessoa")+" na trilha":""}
   window.addEventListener("crew",renderCrew);renderCrew();
+  // pedras na trilha: o Bruno e o grupo sobem e descem
+  var RK=[],nextRock=60;
+  function spawnRock(){var w=110+Math.random()*90,hh=22+Math.random()*22,el=document.createElement("div");el.className="rock";
+    var pts=[[0,hh*.15],[w*.12,-hh*.55],[w*.32,-hh*.95],[w*.6,-hh],[w*.82,-hh*.7],[w,hh*.15]];
+    el.innerHTML='<svg width="'+w.toFixed(0)+'" height="'+(hh+10).toFixed(0)+'" viewBox="0 '+(-hh).toFixed(1)+' '+w.toFixed(1)+' '+(hh+10).toFixed(1)+'"><path d="M'+pts.map(function(p){return p[0].toFixed(1)+" "+p[1].toFixed(1)}).join(" L")+'Z" fill="#7C7868"/><path d="M'+(w*.12).toFixed(1)+' '+(-hh*.55).toFixed(1)+' L'+(w*.32).toFixed(1)+' '+(-hh*.95).toFixed(1)+' L'+(w*.6).toFixed(1)+' '+(-hh).toFixed(1)+' L'+(w*.5).toFixed(1)+' '+(-hh*.55).toFixed(1)+'Z" fill="#9A9684"/><path d="M'+(w*.6).toFixed(1)+' '+(-hh).toFixed(1)+' L'+(w*.82).toFixed(1)+' '+(-hh*.7).toFixed(1)+' L'+w.toFixed(1)+' '+(hh*.15).toFixed(1)+' L'+(w*.7).toFixed(1)+' '+(hh*.1).toFixed(1)+'Z" fill="#5E5B4E"/><path d="M'+(w*.2).toFixed(1)+' '+(hh*.12).toFixed(1)+'q'+(w*.1).toFixed(1)+' -6 '+(w*.2).toFixed(1)+' 0" stroke="#567C3A" stroke-width="3" fill="none"/></svg>';
+    band.insertBefore(el,document.getElementById("fb-crew"));RK.push({el:el,x:G+(RK.length||G>200?band.clientWidth+60:bx()+220),w:w,h:hh});nextRock=G+1100+Math.random()*900}
+  function elevAt(X){var e=0;for(var i=0;i<RK.length;i++){var r=RK[i],sx=r.x-G;if(X>sx&&X<sx+r.w){var u=(X-sx)/r.w;e=Math.max(e,r.h*Math.pow(Math.sin(Math.PI*u),.55)*.92)}}return e}
   var LINES=["bora pra trilha, pessoal!","bebe água, hein!","cuidado com a raiz aí","pisa firme na pedra","ninguém fica pra trás","respira fundo… sente o cheiro da mata?","psiu… escuta os pássaros","lixo volta na mochila, combinado?","olha o passo na descida","pausa pra foto aqui!","ouve a cachoeira? tá perto!","protetor e repelente em dia?","faltam só 2 km!"],li=0;
   function bx(){return br.offsetLeft+br.offsetWidth}
   function spawn(){var a=ANI[ci++%ANI.length],el=document.createElement("div");el.className="crit"+(a.fly?" fly":"");el.innerHTML='<span class="ci">'+a.svg+'</span>';crit.appendChild(el);
@@ -2956,7 +3051,10 @@ var LPS_SRC=(typeof LPS_IMG!=="undefined")?LPS_IMG:"";
     if(pause>0){pause-=dt;if(pause<=0){br.classList.remove("stop");band.classList.remove("stop");talk(LINES[li++%LINES.length])}}
     else if(!reduce)G+=SP*dt;
     LAY.forEach(function(l){var x=(G*l.k)%l.w;l.el.style.transform="translate3d("+(-x).toFixed(1)+"px,0,0)"});
-    if(G>=nextAt)spawn();
+    if(G>=nextAt)spawn();if(G>=nextRock)spawnRock();
+    RK=RK.filter(function(r){var sx=r.x-G;r.el.style.transform="translate3d("+sx.toFixed(1)+"px,0,0)";if(sx<-r.w-20){r.el.remove();return false}return true});
+    var bxC=br.offsetLeft+br.offsetWidth*.5;br.style.translate="0 "+(-elevAt(bxC)).toFixed(1)+"px";
+    crewEl.querySelectorAll(".hk").forEach(function(hk){var cx=crewEl.offsetLeft+hk.offsetLeft+hk.offsetWidth*.5;hk.style.translate="0 "+(-elevAt(cx)).toFixed(1)+"px"});
     var bX=bx();
     CR=CR.filter(function(c){var sx=c.x-G;c.el.style.transform="translate3d("+sx.toFixed(1)+"px,0,0)";
       if(!c.done&&c.a.stop&&sx<bX+70&&sx>bX+20){c.done=true;pause=2.8;br.classList.add("stop");band.classList.add("stop");talk(c.a.say);c.el.classList.add("seen")}
@@ -3106,7 +3204,7 @@ $("bform").addEventListener("submit",function(e){e.preventDefault();var nome=$("
   if(t.preco)L.push("💰 Valor no site: "+t.preco);L.push("","Nome: "+nome,"","Podem confirmar a vaga?");
   window.open(contactUrl(L.join("\n")),"_blank");closeBook()});
 // guia particular
-(function(){var sel=$("pt-trilha");function fill(){var v=sel.value;sel.innerHTML='<option value="">Me sugiram a melhor para o grupo</option>'+activeTours().map(function(t){var km=kmOf(t);return '<option value="'+t.id+'">'+esc(t.nome)+(km!=null?" · "+fmtKm(km)+" km":"")+'</option>'}).join("");sel.value=v}
+(function(){var sel=$("pt-trilha");function fill(){var v=sel.value;sel.innerHTML='<option value="">Sugiram a melhor trilha para o grupo</option>'+activeTours().map(function(t){var km=kmOf(t);return '<option value="'+t.id+'">'+esc(t.nome)+(km!=null?" · "+fmtKm(km)+" km":"")+'</option>'}).join("");sel.value=v}
   fill();window.__ptFill=fill;$("pt-data").min=minDate();var n=2,tipo="Família ou amigos";
   $("pt-tipo").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;tipo=b.dataset.v;this.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",x===b)})});
   $("ptform").addEventListener("click",function(e){var b=e.target.closest("[data-ps]");if(!b)return;n=Math.max(1,Math.min(200,n+ +b.dataset.ps));$("pt-n").textContent=n});
@@ -3119,6 +3217,33 @@ $("bform").addEventListener("submit",function(e){e.preventDefault();var nome=$("
   $("ptform").addEventListener("submit",function(e){e.preventDefault();var nome=$("pt-nome").value.trim(),er=$("pt-err"),dt=$("pt-data").value,fl=$("pt-flex").checked;
     if(!dt&&!fl){er.textContent="Escolha uma data ou marque “data flexível”.";er.hidden=false;return}if(nome.length<2){er.textContent="Coloque seu nome.";er.hidden=false;return}er.hidden=true;
     window.open(contactUrl(msg()),"_blank")})})();
+
+
+/* ============================================================
+   SAÍDAS ABERTAS + PÁGINA /trilhas
+   ============================================================ */
+function openDeps(){var o=[];activeTours().forEach(function(t,i){upcoming(t).forEach(function(x){if(+x.vagas!==0)o.push({t:t,i:i,d:x})})});return o.sort(function(a,b){return a.d.d<b.d.d?-1:1})}
+function renderOpen(){var box=$("opn");if(!box)return;var O=openDeps(),M=["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
+  var nOpen=activeTours().filter(function(t){return upcoming(t).some(function(x){return +x.vagas!==0})}).length;
+  var g=$("h3go-t");if(g){g.textContent=nOpen?"Ver trilhas com saída aberta ("+nOpen+")":"Ver todas as trilhas";g.parentNode.classList.toggle("has",!!nOpen)}
+  if(!O.length){box.innerHTML='<div class="opn-none"><span>Nenhuma saída aberta agora. Escolha uma trilha no mapa e entre na fila de espera.</span><a href="/trilhas" data-pg="trilhas">Ver todas as trilhas →</a></div>';return}
+  box.innerHTML='<div class="opn-h"><b>Saídas abertas</b><a href="/trilhas" data-pg="trilhas">Ver todas as trilhas →</a></div><div class="opn-l">'+O.slice(0,8).map(function(o){var d=parseD(o.d.d);return '<button type="button" class="opn-c" data-book="'+o.t.id+'" data-date="'+o.d.d+'"><span class="opn-d"><b>'+d.getDate()+'</b><small>'+M[d.getMonth()]+'</small></span><span><strong>'+esc(o.t.nome)+'</strong><em>'+[kmOf(o.t)!=null?fmtKm(kmOf(o.t))+" km":"",o.d.vagas?o.d.vagas+" vagas":"vagas abertas"].filter(Boolean).join(" · ")+'</em></span><span class="go">Reservar</span></button>'}).join("")+'</div>'}
+var PGF="open";
+function renderTrailPage(){var g=$("pgt-grid");if(!g)return;var L=activeTours().map(function(t,i){return {t:t,i:i,up:upcoming(t).filter(function(x){return +x.vagas!==0})}});
+  var fs=[["open","Com saída aberta"],["all","Todas"],["1","Leves"],["2","Moderadas"],["3","Desafiadoras"]];
+  if(!L.some(function(x){return x.up.length})&&PGF==="open")PGF="all";
+  $("pgt-f").innerHTML=fs.map(function(f){return '<button type="button" data-f="'+f[0]+'" aria-pressed="'+(PGF===f[0])+'">'+f[1]+'</button>'}).join("");
+  L=L.filter(function(x){return PGF==="all"?true:PGF==="open"?x.up.length:String(x.t.nivel)===PGF}).sort(function(a,b){return (b.up.length?1:0)-(a.up.length?1:0)});
+  g.innerHTML=L.map(function(x){var t=x.t,km=kmOf(t),op=x.up.length;return '<article class="tcard'+(op?" open":"")+'"><div class="ta">'+art(t.art,x.i+30)+'<span class="tbadge'+(op?"":" soon")+'">'+(op?"Saída aberta":"Em breve")+'</span>'+(km!=null?'<span class="tkm">'+fmtKm(km)+' km</span>':'')+'</div>'+
+    '<div class="tb"><h3>'+esc(t.nome)+'</h3>'+(t.txt?'<p>'+esc(t.txt)+'</p>':'')+'<div class="tf"><span>'+LVL[t.nivel]+'</span>'+(t.dur?'<span>'+esc(t.dur)+'</span>':'')+(t.saida?'<span>saída '+esc(t.saida)+'</span>':'')+(t.preco?'<span>'+esc(t.preco)+'</span>':'')+'</div>'+
+    (op?'<div class="td">'+upcoming(t).slice(0,6).map(function(d){var full=+d.vagas===0;return '<button type="button" data-book="'+t.id+'" data-date="'+d.d+'" '+(full?"disabled":"")+'>'+shortD(d.d)+(full?" · esgotado":d.vagas?" · "+d.vagas+" vagas":"")+'</button>'}).join("")+'</div>':'')+
+    '<button type="button" class="btn '+(op?"btn-amber":"btn-ghost")+'" data-book="'+t.id+'">'+(op?"Reservar":"Quero ser avisado")+'</button></div></article>'}).join("")||'<p class="help">Nenhuma trilha neste filtro.</p>'}
+$("pgt-f").addEventListener("click",function(e){var b=e.target.closest("[data-f]");if(!b)return;PGF=b.dataset.f;renderTrailPage()});
+function route(){var on=/^\/trilhas\/?$/i.test(location.pathname)||location.hash==="#/trilhas";document.body.classList.toggle("pg-trilhas",on);$("pg-trilhas").hidden=!on;if(on){renderTrailPage();document.title="Trilhas · Leopardos das Montanhas";window.scrollTo(0,0);if(window.__lenis)window.__lenis.scrollTo(0,{immediate:true})}else document.title="Leopardos das Montanhas · Trilhas e Cachoeiras"}
+document.addEventListener("click",function(e){var a=e.target.closest("[data-pg]");if(!a)return;e.preventDefault();var p=a.dataset.pg;
+  if(p==="trilhas"){if(/^https?:/.test(location.protocol+"")&&!/claude|anthropic|usercontent/.test(location.host))history.pushState({},"","/trilhas");else location.hash="#/trilhas";route()}
+  else{if(location.pathname!=="/"&&/^https?:/.test(location.protocol)&&!/claude|anthropic|usercontent/.test(location.host))history.pushState({},"","/");else if(location.hash)history.pushState({},"",location.pathname+location.search);route();if(p==="particular")setTimeout(function(){scrollToId("particular")},60)}});
+window.addEventListener("popstate",route);window.addEventListener("hashchange",function(){if(location.hash==="#/trilhas"||document.body.classList.contains("pg-trilhas"))route()});
 
 /* ============================================================
    FILA DE ESPERA — "Quero ser avisado"
@@ -3305,8 +3430,9 @@ $("ad-save").onclick=function(){
 };
 
 /* ---------- inicialização ---------- */
-function refreshAll(){if(window.__heroRefresh)setTimeout(window.__heroRefresh,0);renderKm();if(state.tour&&!curTour()){state.tour=null;state.step=1;state.maxStep=1}renderTours();renderCross();renderVideos();renderGal();if(window.__ptFill)window.__ptFill();refreshContacts();renderSteps();renderPanel();if(Object.keys(quiz).length)suggest()}
-refreshAll();watchRv();
+function refreshAll(){if(window.__heroRefresh)setTimeout(window.__heroRefresh,0);renderKm();if(state.tour&&!curTour()){state.tour=null;state.step=1;state.maxStep=1}renderTours();renderCross();renderVideos();renderGal();renderOpen();if(document.body.classList.contains('pg-trilhas'))renderTrailPage();if(window.__ptFill)window.__ptFill();refreshContacts();renderSteps();renderPanel();if(Object.keys(quiz).length)suggest()}
+(function(){var L=activeTours();for(var i=0;i<L.length;i++){if(upcoming(L[i]).some(function(x){return +x.vagas!==0})){CROSS.i=i;break}}})();
+refreshAll();watchRv();route();
 if(IS_ADM){var _l=$("loader");if(_l)_l.remove();document.body.classList.add("ready");document.title="Área do guia · Leopardos das Montanhas";openAdmin()}
 loadData().then(function(){if(!DATA.videos)DATA.videos=JSON.parse(JSON.stringify(DEFAULT_VIDEOS));refreshAll();if(!$("admin").hidden&&adminPin)renderAdmin();else if(location.hash==="#area-do-guia"&&!IS_ADM)openAdmin()});
 
