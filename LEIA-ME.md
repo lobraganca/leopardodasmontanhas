@@ -2,7 +2,8 @@
 
 ## Arquivos
 - `index.html` — o site inteiro (sobe no GitHub e publica na Vercel, igual aos outros).
-- `planilha-apps-script.gs` — código que liga a Área do guia a uma planilha Google.
+- `api/` — as funções da Vercel que guardam os dados no banco (trilhas, fotos, fila de espera, acessos e pedidos).
+- `package.json` — necessário para a pasta `api/` funcionar na Vercel.
 - `vercel.json` — faz o endereço /adm abrir a Área do guia (precisa ir junto no GitHub).
 - `og.jpg` — imagem que aparece quando o link é compartilhado no WhatsApp/Instagram (também vai junto).
 
@@ -10,23 +11,26 @@
 Endereço: **www.leopardosdasmontanhas.com.br/adm** (não aparece em nenhum link do site e não vai para o Google). Na prévia do Claude, use `#area-do-guia` no fim do link.
 
 Lá o guia:
+- vê os **Acessos** (primeira aba): quantas pessoas visitaram o site (hoje, 7, 30 ou 90 dias), quantas visitas, quantos clicaram no WhatsApp, de onde vieram (Instagram, Google, direto…), celular ou computador, cidades e estados aproximados, trilhas mais pedidas e a fila por trilha. Em **Quem mandou no WhatsApp** aparece cada pedido feito pelo site (reserva de trilha ou guia particular) com nome, trilha, data, pessoas, hora e cidade aproximada; dá para marcar como respondido ou apagar. O contador não guarda IP nem conta robôs, e não conta as visitas da própria Área do guia;
 - cria, edita, liga/desliga e reordena **expedições** (nome, descrição, nível, duração, distância, horário, valor, ponto de encontro, ilustração);
 - abre **datas** com número de vagas (0 = esgotado). Elas aparecem nos cards e na reserva. Expedição **sem data futura aparece automaticamente como "Em breve"**;
 - o campo **Distância (km)** posiciona a expedição no **mapa da serra** (quanto mais km, mais longe do acampamento) e aparece no carimbo do cartão-postal;
 - cadastra **vídeos de manejo** (cobras, escorpiões, sapos, aranhas, outros). Os vídeos são do próprio Bruno: suba os arquivos .mp4 (em pé, formato reels) na pasta **videos/** do repositório e, na aba Vídeos, escreva o nome (ex.: `videos/jararaca.mp4`). Também aceita link do Google Drive compartilhado. No site, o vídeo roda sem som no cartão e abre em tela cheia com som. Dica: vídeos de até ~30 MB carregam bem; uma capa (imagem) é opcional;
-- troca as **fotos das cachoeiras** (aba Fotos): suba as imagens na pasta **fotos/** e escreva o nome (ex.: `fotos/poco-azul.jpg`). As que vêm no site foram tiradas do Instagram do Bruno (resolução baixa): troque pelas originais quando tiver;
+- troca as **fotos das cachoeiras** (aba Fotos): toque em **+ Enviar fotos**, escolha da galeria do celular (pode várias de uma vez), escreva a legenda se quiser e toque em **Salvar e publicar**. A foto é diminuída sozinha antes de enviar, então carrega rápido. As que vêm no site foram tiradas do Instagram do Bruno (resolução baixa): troque pelas originais quando tiver;
 - carrega o **trajeto GPX** de cada trilha (exportado do Wikiloc, Strava, AllTrails ou relógio). Quando pelo menos uma trilha tem GPX, aparece o botão **Mapa real** na seção Trilhas, com imagem de satélite e relevo;
 - troca o **WhatsApp** que recebe as reservas (já vem com (31) 99648-5236);
 - vê a **Fila de espera**: quem tocou em "Quero ser avisado" numa trilha sem data deixa nome, WhatsApp e quantas pessoas. Na aba, as pessoas aparecem separadas por trilha, na ordem em que entraram. O botão **Avisar** abre o WhatsApp da pessoa com a mensagem pronta (editável) e marca como avisado; **Avisar próximo** vai chamando um por um.
 
-## Para valer para todo mundo (5 minutos)
-Sem a planilha, o que se salva fica só no navegador de quem editou (modo de teste, login `bruno` e senha `123456789`).
-1. Siga os passos no topo de `planilha-apps-script.gs` e troque a SENHA lá.
-2. Cole a URL `/exec` em `CONFIG.api` no começo do `<script>` do `index.html`.
-3. Suba de novo no GitHub. Pronto: o guia entra com a senha nova e o que ele salvar já aparece no site.
+## Ligar o banco na Vercel (uma vez só, uns 3 minutos)
+Sem o banco, o site funciona em **modo de teste**: o que se salva fica só no aparelho de quem editou e a aba Acessos fica desligada.
+1. Abra https://vercel.com/marketplace/upstash e toque em **Install** (ou **Add Integration**).
+2. Escolha o plano **Free**, dê um nome (ex.: `leopardos`) e a região **São Paulo (gru1)**, se aparecer.
+3. Na tela seguinte, **conecte ao projeto `leopardodasmontanhas`** (marque Production, Preview e Development).
+4. Abra https://vercel.com/dashboard → projeto **leopardodasmontanhas** → **Deployments** → no último, toque nos **⋯** → **Redeploy**.
+Pronto: o login continua `bruno` / `123456789`, o que o guia salvar aparece para todo mundo e o contador começa a contar.
 
-A fila de espera também fica nessa planilha, na aba **espera** (é criada sozinha). Sem a planilha, a fila só funciona no mesmo navegador (bom só para teste).
-Se você já tinha implantado o Apps Script antes, cole o arquivo novo e faça Implantar > Gerenciar implantações > editar > **Nova versão**.
+Para trocar o login ou a senha: no projeto da Vercel, **Settings → Environment Variables**, crie `ADMIN_USER` e `ADMIN_PASS` e faça Redeploy.
+Na primeira vez com o banco ligado, o site mostra as trilhas que vêm no código; entre no /adm, confira e toque em **Salvar e publicar** para gravar tudo no banco.
 
 ## Observação
 Dentro da prévia do Claude os vídeos não tocam no próprio site (o player abre o link). Publicado na Vercel, Reels/YouTube/TikTok tocam ali mesmo.
