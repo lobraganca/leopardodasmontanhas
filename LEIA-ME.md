@@ -7,7 +7,7 @@
 - `og.jpg` — imagem que aparece quando o link é compartilhado no WhatsApp/Instagram (também vai junto).
 
 ## Área do guia
-Endereço: **www.leopardodasmontanhas.com.br/adm** (não aparece em nenhum link do site e não vai para o Google). Na prévia do Claude, use `#area-do-guia` no fim do link.
+Endereço: **www.leopardosdasmontanhas.com.br/adm** (não aparece em nenhum link do site e não vai para o Google). Na prévia do Claude, use `#area-do-guia` no fim do link.
 
 Lá o guia:
 - cria, edita, liga/desliga e reordena **expedições** (nome, descrição, nível, duração, distância, horário, valor, ponto de encontro, ilustração);
@@ -37,9 +37,9 @@ Na seção **Trilhas disponíveis**, o visitante escolhe a trilha e toca em **Qu
 ## Imagens
 Logo, pôster do Bruno e os leopardos da logo já estão dentro do `index.html`. As animações premium usam GSAP e Lenis (carregados de CDN); sem internet para elas, o site continua funcionando normalmente.
 
-## Domínio www.leopardodasmontanhas.com.br (GoDaddy + Vercel)
+## Domínio www.leopardosdasmontanhas.com.br (GoDaddy + Vercel)
 1. Suba `index.html`, `vercel.json` e `og.jpg` num repositório novo no GitHub e importe na Vercel (igual ao site da Laisa).
-2. Na Vercel: Project > Settings > Domains > adicione `leopardodasmontanhas.com.br` e `www.leopardodasmontanhas.com.br`.
+2. Na Vercel: Project > Settings > Domains > adicione `leopardosdasmontanhas.com.br` e `www.leopardosdasmontanhas.com.br`.
 3. Na GoDaddy (Meu domínio > DNS), crie/edite os registros que a Vercel mostrar. Normalmente:
    - Tipo **A**, nome **@**, valor **76.76.21.21**
    - Tipo **CNAME**, nome **www**, valor **cname.vercel-dns.com**
