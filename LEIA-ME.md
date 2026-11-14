@@ -20,7 +20,7 @@ Lá o guia:
 - vê a **Fila de espera**: quem tocou em "Quero ser avisado" numa trilha sem data deixa nome, WhatsApp e quantas pessoas. Na aba, as pessoas aparecem separadas por trilha, na ordem em que entraram. O botão **Avisar** abre o WhatsApp da pessoa com a mensagem pronta (editável) e marca como avisado; **Avisar próximo** vai chamando um por um.
 
 ## Para valer para todo mundo (5 minutos)
-Sem a planilha, o que se salva fica só no navegador de quem editou (modo de teste, senha `leopardo`).
+Sem a planilha, o que se salva fica só no navegador de quem editou (modo de teste, login `bruno` e senha `123456789`).
 1. Siga os passos no topo de `planilha-apps-script.gs` e troque a SENHA lá.
 2. Cole a URL `/exec` em `CONFIG.api` no começo do `<script>` do `index.html`.
 3. Suba de novo no GitHub. Pronto: o guia entra com a senha nova e o que ele salvar já aparece no site.

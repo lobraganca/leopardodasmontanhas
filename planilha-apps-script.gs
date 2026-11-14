@@ -14,7 +14,7 @@
  *
  * Se mudar a senha depois: salve e faça Implantar > Gerenciar implantações > editar > Nova versão.
  */
-var SENHA = "troque-esta-senha";
+var SENHA = "123456789";
 
 function aba_() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();

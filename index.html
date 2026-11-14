@@ -1976,7 +1976,9 @@ footer .credit .wrap{display:flex!important;flex-direction:column;align-items:ce
 var CONFIG = {
   nome: "Leopardos das Montanhas",
   instagram: "leopardosdasmontanhas",
-  api: ""
+  api: "",
+  adminUser: "bruno",
+  adminTestPass: "123456789"
 };
 
 /* Dados iniciais — o guia troca tudo isso pela Área do guia */
@@ -3321,12 +3323,13 @@ document.querySelectorAll(".open-admin").forEach(function(a){a.addEventListener(
 window.addEventListener("hashchange",function(){if(location.hash==="#area-do-guia")openAdmin()});
 function renderLogin(){
   $("ad-body").innerHTML='<div class="ad-login"><img src="'+document.querySelector(".brand img").src+'" alt=""><h3>Área do guia</h3><p class="help">Aqui você cadastra as expedições, abre datas com vagas e coloca os vídeos de manejo.</p>'+
-    '<form id="ad-login"><div class="fld"><label for="ad-pin">Senha</label><input id="ad-pin" type="password" inputmode="numeric" autocomplete="current-password" placeholder="Sua senha de acesso"></div><p class="err" id="ad-lerr" hidden></p><button class="btn btn-dark" style="width:100%">Entrar</button></form>'+
-    (CONFIG.api?'':'<p class="ad-note">Modo de teste: o que você salvar fica só neste navegador. Para valer no site para todo mundo, configure a planilha (veja o LEIA-ME). Senha de teste: <b>leopardo</b></p>')+'</div>';
+    '<form id="ad-login"><div class="fld"><label for="ad-user">Login</label><input id="ad-user" autocomplete="username" autocapitalize="none" placeholder="Seu login"></div><div class="fld"><label for="ad-pin">Senha</label><input id="ad-pin" type="password" inputmode="numeric" autocomplete="current-password" placeholder="Sua senha de acesso"></div><p class="err" id="ad-lerr" hidden></p><button class="btn btn-dark" style="width:100%">Entrar</button></form>'+
+    (CONFIG.api?'':'<p class="ad-note">Modo de teste: o que você salvar fica só neste navegador. Para valer no site para todo mundo, configure a planilha (veja o LEIA-ME). Login <b>bruno</b></p>')+'</div>';
   $("ad-save").hidden=true;$("ad-tabs").hidden=true;
-  setTimeout(function(){var x=$("ad-pin");x&&x.focus()},50);
+  setTimeout(function(){var x=$("ad-user");x&&x.focus()},50);
   $("ad-login").onsubmit=function(e){e.preventDefault();var p=$("ad-pin").value.trim();if(!p)return;
-    if(!CONFIG.api&&p!=="leopardo"){$("ad-lerr").textContent="Senha incorreta.";$("ad-lerr").hidden=false;return}
+    var u=($("ad-user").value||"").trim().toLowerCase();if(u!==CONFIG.adminUser){$("ad-lerr").textContent="Login ou senha incorretos.";$("ad-lerr").hidden=false;return}
+    if(!CONFIG.api&&p!==CONFIG.adminTestPass){$("ad-lerr").textContent="Login ou senha incorretos.";$("ad-lerr").hidden=false;return}
     checkPin(p).then(function(r){if(r&&r.ok){adminPin=p;renderAdmin()}else{$("ad-lerr").textContent="Senha incorreta.";$("ad-lerr").hidden=false}}).catch(function(){$("ad-lerr").textContent="Sem conexão com a planilha. Tente de novo.";$("ad-lerr").hidden=false})};
 }
 function markDirty(){dirty=true;$("ad-save").classList.add("pulse");$("ad-status").textContent="Alterações não salvas"}
