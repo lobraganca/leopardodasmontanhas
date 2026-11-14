@@ -1,0 +1,10 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/adm", "destination": "/index.html" },
+    { "source": "/adm/", "destination": "/index.html" }
+  ],
+  "headers": [
+    { "source": "/adm", "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }] }
+  ]
+}
