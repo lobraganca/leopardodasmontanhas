@@ -1650,6 +1650,11 @@ html.adm-only body{overflow:hidden}
   .ad-top .brand b{font-size:15px;overflow:hidden;text-overflow:ellipsis}
   .ad-inst{display:none!important}
 }
+
+.acc-f{flex-wrap:wrap;gap:6px}.acc-f button{padding:7px 12px;font-size:13px}
+.acc-st{font-size:11.5px;font-weight:800;border-radius:99px;padding:2px 9px}.acc-st.ok{background:#e3f1e7;color:#1f6b3d}.acc-st.no{background:#fde4dc;color:#a03a1c}
+.acc-wa{padding:8px 14px;font-size:13px;text-decoration:none}
+.acc-p .ad-actions{justify-content:flex-start;align-items:center;flex-wrap:wrap;gap:10px 14px;margin-top:8px}
 </style>
 </head>
 <body>
@@ -1879,7 +1884,7 @@ html.adm-only body{overflow:hidden}
         <div class="fld"><label for="pt-data">Data</label><input type="date" id="pt-data"><label class="check" style="margin-top:8px"><input type="checkbox" id="pt-flex">Data flexível</label></div>
         <div class="fld"><label>Pessoas</label><div class="pt-step"><button type="button" data-ps="-1" aria-label="Menos">−</button><b id="pt-n">2</b><button type="button" data-ps="1" aria-label="Mais">+</button></div><label class="check" style="margin-top:8px"><input type="checkbox" id="pt-transp">Precisamos de transporte</label></div>
       </div>
-      <div class="fld"><label for="pt-nome">Seu nome</label><input id="pt-nome" autocomplete="name" placeholder="Como o Bruno te chama"></div>
+      <div class="grid2"><div class="fld"><label for="pt-nome">Seu nome</label><input id="pt-nome" autocomplete="name" placeholder="Como o Bruno te chama"></div><div class="fld"><label for="pt-wa">Seu WhatsApp</label><input id="pt-wa" class="wa-mask" type="tel" inputmode="tel" autocomplete="tel" maxlength="16" placeholder="(31) 99999-9999"></div></div>
       <div class="fld"><label for="pt-obs">Algo mais? <span class="opt-t">(opcional)</span></label><textarea id="pt-obs" placeholder="Crianças no grupo, alguém sem preparo, aniversário, almoço…"></textarea></div>
       <p class="err" id="pt-err" hidden></p>
       <div class="pt-prev"><small>prévia da mensagem para o Bruno</small><p id="pt-prev"></p></div>
@@ -3271,26 +3276,28 @@ document.addEventListener("keydown",function(e){if($("gview").hidden)return;if(e
    RESERVA RÁPIDA (janela) e GUIA PARTICULAR
    ============================================================ */
 var BK={t:null,d:null,a:1,c:0};
-function openBook(t,d){var g=window.__grp||{};BK={t:t,d:d,a:Math.max(1,g.a||1),c:g.c||0};
+function openBook(t,d){if(window.LEADSENT&&LEADSENT.reserva){LEADS.reserva=null;LEADSENT.reserva=false}var g=window.__grp||{};BK={t:t,d:d,a:Math.max(1,g.a||1),c:g.c||0};
   var up=upcoming(t).filter(function(x){return +x.vagas!==0});if(!BK.d&&up.length===1)BK.d=up[0].d;renderBook();$("bmodal").hidden=false;document.body.style.overflow="hidden"}
 function renderBook(){var t=BK.t,up=upcoming(t),km=kmOf(t);
   $("bm-in").innerHTML='<span class="hand">reservar</span><h3 id="bm-t">'+esc(t.nome)+'</h3><p class="bm-sum">'+[km!=null?fmtKm(km)+" km":"",t.dur,LVL[t.nivel],t.saida?"saída "+t.saida:"",t.preco].filter(Boolean).map(esc).join(" · ")+'</p>'+
     '<div class="fld"><label>Escolha a data</label><div class="bm-dates">'+up.map(function(x){var full=+x.vagas===0;return '<button type="button" data-bd="'+x.d+'" aria-pressed="'+(BK.d===x.d)+'" '+(full?"disabled":"")+'>'+shortD(x.d)+'<small>'+(full?"esgotado":x.vagas?x.vagas+" vaga"+(x.vagas>1?"s":""):"vagas abertas")+'</small></button>'}).join("")+'</div></div>'+
     '<div class="fld"><label>Quem vai</label><div class="bm-ppl"><div><span>Adultos<small>13+ anos</small></span><span class="s"><button type="button" data-bp="a" data-v="-1" aria-label="Menos adultos">−</button><b>'+BK.a+'</b><button type="button" data-bp="a" data-v="1" aria-label="Mais adultos">+</button></span></div><div><span>Crianças<small>até 12</small></span><span class="s"><button type="button" data-bp="c" data-v="-1" aria-label="Menos crianças">−</button><b>'+BK.c+'</b><button type="button" data-bp="c" data-v="1" aria-label="Mais crianças">+</button></span></div></div></div>'+
     '<div class="fld"><label for="bm-nome">Seu nome</label><input id="bm-nome" autocomplete="name" value="'+esc(BK.nome||"")+'" placeholder="Como o Bruno te chama"></div>'+
+    '<div class="fld"><label for="bm-wa">Seu WhatsApp</label><input id="bm-wa" class="wa-mask" type="tel" inputmode="tel" autocomplete="tel" maxlength="16" value="'+esc(BK.wa||"")+'" placeholder="(31) 99999-9999"></div>'+
     '<p class="err" id="bm-err" hidden></p><button type="submit" class="btn btn-wa" style="width:100%;justify-content:center"><svg width="20" height="20" aria-hidden="true"><use href="#wa"/></svg>Reservar pelo WhatsApp</button>'+
     '<p class="help" style="text-align:center;font-size:12.5px;margin:10px 0 0">Só o seu grupo? <button type="button" class="linkbtn" data-bpriv="1">Peça um passeio particular</button></p>'}
 function closeBook(){$("bmodal").hidden=true;document.body.style.overflow=""}
 $("bm-x").onclick=closeBook;$("bmodal").addEventListener("click",function(e){if(e.target.id==="bmodal"){closeBook();return}
-  var d=e.target.closest("[data-bd]");if(d){BK.nome=$("bm-nome").value;BK.d=d.dataset.bd;renderBook();return}
-  var p=e.target.closest("[data-bp]");if(p){BK.nome=$("bm-nome").value;var k=p.dataset.bp;BK[k]=Math.max(k==="a"?1:0,Math.min(40,BK[k]+ +p.dataset.v));renderBook();return}
+  var d=e.target.closest("[data-bd]");if(d){BK.nome=$("bm-nome").value;BK.wa=$("bm-wa").value;BK.d=d.dataset.bd;renderBook();return}
+  var p=e.target.closest("[data-bp]");if(p){BK.nome=$("bm-nome").value;BK.wa=$("bm-wa").value;var k=p.dataset.bp;BK[k]=Math.max(k==="a"?1:0,Math.min(40,BK[k]+ +p.dataset.v));renderBook();return}
   if(e.target.closest("[data-bpriv]")){var t=BK.t;closeBook();$("pt-trilha").value=t.id;scrollToId("particular")}});
 document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!$("bmodal").hidden)closeBook()});
 $("bform").addEventListener("submit",function(e){e.preventDefault();var nome=$("bm-nome").value.trim(),er=$("bm-err");
   if(!BK.d){er.textContent="Escolha uma data.";er.hidden=false;return}if(nome.length<2){er.textContent="Coloque seu nome.";er.hidden=false;return}
+  var bwa=$("bm-wa").value.replace(/\D/g,"");if(bwa.length<10){er.textContent="Coloque seu WhatsApp com DDD.";er.hidden=false;return}
   var t=BK.t,L=["Olá, "+CONFIG.nome+"! Quero reservar uma trilha 🌿","","🥾 Trilha: "+t.nome,"📅 Data: "+fmtDate(parseD(BK.d)),"👥 Pessoas: "+BK.a+" adulto(s)"+(BK.c?" e "+BK.c+" criança(s)":"")];
   if(t.preco)L.push("💰 Valor no site: "+t.preco);L.push("","Nome: "+nome,"","Podem confirmar a vaga?");
-  window.open(contactUrl(L.join("\n")),"_blank");track("reserva",t.nome);track("whatsapp");lead({tipo:"reserva",name:nome,trilha:t.nome,data:BK.d,ad:BK.a,ch:BK.c});closeBook()});
+  window.open(contactUrl(L.join("\n")),"_blank");track("reserva",t.nome);track("whatsapp");draftLead("reserva",true);BK.nome="";BK.wa="";closeBook()});
 // guia particular
 (function(){var sel=$("pt-trilha");function fill(){var v=sel.value;sel.innerHTML='<option value="">Sugiram a melhor trilha para o grupo</option>'+activeTours().map(function(t){var km=kmOf(t);return '<option value="'+t.id+'">'+esc(t.nome)+(km!=null?" · "+fmtKm(km)+" km":"")+'</option>'}).join("");sel.value=v}
   fill();window.__ptFill=fill;$("pt-data").min=minDate();var n=2,tipo="Família ou amigos";
@@ -3301,10 +3308,11 @@ $("bform").addEventListener("submit",function(e){e.preventDefault();var nome=$("
     var L=["Olá, "+CONFIG.nome+"! Quero contratar um guia particular 🌿","","👥 Para: "+tipo+" ("+n+" pessoa"+(n>1?"s":"")+")","🥾 Trilha: "+(t?t.nome:"me sugiram a melhor para o grupo"),"📅 Data: "+(fl?"flexível, me sugiram":dt?fmtDate(parseD(dt)):"…"),"🚐 Transporte: "+($("pt-transp").checked?"precisamos":"não precisa")];
     var ob=$("pt-obs").value.trim();if(ob)L.push("📝 "+ob);L.push("","Nome: "+(nome||"…"),"","Pode me passar um orçamento?");return L.join("\n")}
   function prev(){$("pt-prev").textContent=msg()}
+  window.__ptState=function(){var tt=tourBy(sel.value),dt=$("pt-data").value,fl=$("pt-flex").checked;return {name:$("pt-nome").value.trim(),phone:$("pt-wa").value,trilha:tt?tt.nome:"Sugerir",data:fl?"flexível":dt,ad:n,para:tipo,transp:$("pt-transp").checked?"sim":"",obs:$("pt-obs").value.trim()}};
   $("ptform").addEventListener("input",prev);$("ptform").addEventListener("change",prev);$("ptform").addEventListener("click",function(){setTimeout(prev,0)});prev();
   $("ptform").addEventListener("submit",function(e){e.preventDefault();var nome=$("pt-nome").value.trim(),er=$("pt-err"),dt=$("pt-data").value,fl=$("pt-flex").checked;
-    if(!dt&&!fl){er.textContent="Escolha uma data ou marque “data flexível”.";er.hidden=false;return}if(nome.length<2){er.textContent="Coloque seu nome.";er.hidden=false;return}er.hidden=true;
-    window.open(contactUrl(msg()),"_blank");var tt=tourBy(sel.value);track("particular");track("whatsapp");lead({tipo:"particular",name:nome,trilha:tt?tt.nome:"Sugerir",data:fl?"flexível":dt,ad:n,para:tipo,transp:$("pt-transp").checked?"sim":"",obs:$("pt-obs").value.trim()})})})();
+    if(!dt&&!fl){er.textContent="Escolha uma data ou marque “data flexível”.";er.hidden=false;return}if(nome.length<2){er.textContent="Coloque seu nome.";er.hidden=false;return}if($("pt-wa").value.replace(/\D/g,"").length<10){er.textContent="Coloque seu WhatsApp com DDD.";er.hidden=false;return}er.hidden=true;
+    window.open(contactUrl(msg()),"_blank");var tt=tourBy(sel.value);track("particular");track("whatsapp");draftLead("particular",true)})})();
 
 
 /* ============================================================
@@ -3529,11 +3537,23 @@ function beacon(url,o){var body=JSON.stringify(o);try{if(navigator.sendBeacon&&n
 function track(e,t){if(!trackOn())return;var r="";try{r=document.referrer?new URL(document.referrer).hostname:""}catch(x){}
   var tz="";try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||""}catch(x){}
   beacon("/api/hit",{e:e,v:visitorId(),r:r,tz:tz,t:t||""})}
-function lead(o){if(!trackOn())return;o.id="p"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);o.sent=true;beacon("/api/lead",o)}
+function lead(o){if(!trackOn())return;beacon("/api/lead",o)}
+/* pedidos começados: guarda enquanto a pessoa preenche (para o Bruno ver quem não enviou) */
+var LEADS={reserva:null,particular:null},LEADSENT={},leadTm={};
+function leadId(k){if(!LEADS[k])LEADS[k]="p"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);return LEADS[k]}
+function leadState(k){if(k==="reserva"){var t=BK.t,n=$("bm-nome"),w=$("bm-wa");if(!t||!n)return null;return {name:n.value.trim(),phone:w?w.value:"",trilha:t.nome,data:BK.d||"",ad:BK.a,ch:BK.c}}
+  return window.__ptState?window.__ptState():null}
+function draftLead(k,sent){clearTimeout(leadTm[k]);leadTm[k]=null;var o=leadState(k);if(!o)return;var ph=String(o.phone||"").replace(/\D/g,"");
+  if(o.name.length<2&&ph.length<10)return;o.phone=ph;o.tipo=k;o.id=leadId(k);o.sent=!!sent;lead(o);if(sent)LEADSENT[k]=true}
+function draftSoon(k){clearTimeout(leadTm[k]);leadTm[k]=setTimeout(function(){draftLead(k,false)},1500)}
+document.addEventListener("input",function(e){var t=e.target;if(t.classList&&t.classList.contains("wa-mask")){var n=t.value.replace(/\D/g,"").slice(0,11),o=n;if(n.length>2)o="("+n.slice(0,2)+") "+n.slice(2);if(n.length>7)o="("+n.slice(0,2)+") "+n.slice(2,n.length===11?7:6)+"-"+n.slice(n.length===11?7:6);t.value=o}
+  if(t.closest&&t.closest("#bform"))draftSoon("reserva");else if(t.closest&&t.closest("#ptform"))draftSoon("particular")});
+document.addEventListener("change",function(e){if(e.target.closest&&e.target.closest("#ptform"))draftSoon("particular")});
+document.addEventListener("visibilitychange",function(){if(document.visibilityState==="hidden"){["reserva","particular"].forEach(function(k){if(leadTm[k]){draftLead(k,false)}})}});
 document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest('a[href*="wa.me"],a[href*="api.whatsapp"]');if(a)track("whatsapp")},true);
 
 /* ---------- aba Acessos ---------- */
-var ACC={per:30,data:null};
+var ACC={per:30,data:null,f:"todos"};
 function apiStats(o){return fetch("/api/stats",{method:"POST",headers:{"Content-Type":"application/json"},cache:"no-store",body:JSON.stringify(Object.assign({user:adminUser,pass:adminPin},o||{}))}).then(function(r){return r.json().then(function(j){if(!r.ok&&!j.erro)j.erro="Erro "+r.status;return j})})}
 function dIso(d){return isoD(d)}
 function renderAcessos(){var box=$("ad-body");
@@ -3547,21 +3567,31 @@ function drawAcessos(){var j=ACC.data,box=$("ad-body");var sum=function(k){retur
   var hoje=j.dias[j.dias.length-1]||{};
   var tile=function(n,l,sub){return '<div class="acc-t"><b>'+n+'</b><span>'+l+'</span>'+(sub?'<small>'+sub+'</small>':'')+'</div>'};
   var h='<div class="ad-head"><div class="seg acc-per">'+[[1,"Hoje"],[7,"7 dias"],[30,"30 dias"],[90,"90 dias"]].map(function(p){return '<button type="button" data-per="'+p[0]+'" aria-pressed="'+(ACC.per===p[0])+'">'+p[1]+'</button>'}).join("")+'</div><button type="button" class="btn btn-ghost" id="acc-re">Atualizar</button></div>';
-  h+='<div class="acc-tiles">'+tile(j.pessoasPeriodo,"pessoas visitaram",ACC.per>1?"hoje: "+(hoje.pessoas||0):"")+tile(views,"visitas",(j.retorno.voltaram||0)+" voltaram")+tile(wa,"cliques no WhatsApp",views?Math.round(wa/views*100)+"% das visitas":"")+tile(res+part,"pedidos enviados",res+" trilha · "+part+" particular")+tile(esp,"entraram na fila","")+'</div>';
+  h+='<div class="acc-tiles">'+tile(j.pessoasPeriodo,"pessoas visitaram",ACC.per>1?"hoje: "+(hoje.pessoas||0):"")+tile(views,"visitas",(j.retorno.voltaram||0)+" voltaram")+tile(wa,"cliques no WhatsApp",views?Math.round(wa/views*100)+"% das visitas":"")+tile(res+part,"pedidos enviados",((j.pedidos||[]).filter(function(p){return p.enviado!=="sim"&&(+p.criado||0)>=new Date(j.de+"T00:00:00").getTime()-864e5}).length)+" começaram e não enviaram")+tile(esp,"entraram na fila","")+'</div>';
   // gráfico por dia
   if(j.dias.length>1){var mx=Math.max.apply(null,j.dias.map(function(d){return d.pessoas||0}).concat([1]));
     h+='<div class="acc-card"><h4>Pessoas por dia</h4><div class="acc-bars">'+j.dias.map(function(d){var v=d.pessoas||0,w=+d.whatsapp||0;return '<div class="acc-b" title="'+d.dia.slice(8)+'/'+d.dia.slice(5,7)+': '+v+' pessoa(s), '+w+' no WhatsApp"><i style="height:'+Math.max(2,v/mx*100)+'%"></i>'+(w?'<u style="height:'+Math.max(2,Math.min(v||w,w)/mx*100)+'%"></u>':'')+'</div>'}).join("")+'</div><p class="acc-leg"><i></i>pessoas <u></u>clicaram no WhatsApp</p></div>'}
-  // pedidos
-  var P=(j.pedidos||[]).filter(function(p){var c=+p.criado||0;return c>=new Date(j.de+"T00:00:00").getTime()-864e5});
-  h+='<div class="acc-card"><h4>Quem mandou no WhatsApp <small>'+P.length+'</small></h4><p class="help" style="margin:-4px 0 12px">Pedidos feitos pelo site (reserva de trilha e guia particular). A mensagem chegou no seu WhatsApp; aqui fica o registro.</p>';
-  if(!P.length)h+='<p class="acc-empty">Nenhum pedido nesse período.</p>';
-  P.forEach(function(p){var c=new Date(+p.criado||0),q=String(c.getDate()).padStart(2,"0")+"/"+String(c.getMonth()+1).padStart(2,"0")+" às "+String(c.getHours()).padStart(2,"0")+":"+String(c.getMinutes()).padStart(2,"0");
+  // pedidos (enviados e não enviados)
+  var P0=(j.pedidos||[]).filter(function(p){var c=+p.criado||0;return c>=new Date(j.de+"T00:00:00").getTime()-864e5});
+  var nS=P0.filter(function(p){return p.enviado==="sim"}).length,nN=P0.length-nS;
+  var P=P0.filter(function(p){return ACC.f==="enviou"?p.enviado==="sim":ACC.f==="nao"?p.enviado!=="sim":true});
+  h+='<div class="acc-card" id="acc-ped"><h4>Pedidos pelo site <small>'+P0.length+'</small></h4><p class="help" style="margin:-4px 0 10px">Quem preencheu a reserva de trilha ou o guia particular. <b>Não enviou</b> = começou, deixou nome ou WhatsApp, mas não mandou a mensagem. Vale chamar!</p>'+
+    '<div class="seg acc-f">'+[["todos","Todos ("+P0.length+")"],["nao","🕓 Não enviaram ("+nN+")"],["enviou","📩 Enviaram ("+nS+")"]].map(function(x){return '<button type="button" data-f="'+x[0]+'" aria-pressed="'+(ACC.f===x[0])+'">'+x[1]+'</button>'}).join("")+'</div>';
+  if(!P.length)h+='<p class="acc-empty" style="margin-top:12px">'+(ACC.f==="nao"?"Ninguém deixou de enviar nesse período. 🎉":"Nenhum pedido nesse período.")+'</p>';
+  var fmtT=function(ms){var c=new Date(+ms||0);return String(c.getDate()).padStart(2,"0")+"/"+String(c.getMonth()+1).padStart(2,"0")+" às "+String(c.getHours()).padStart(2,"0")+":"+String(c.getMinutes()).padStart(2,"0")};
+  P.forEach(function(p){var sent=p.enviado==="sim";
     var dt=/^\d{4}-\d{2}-\d{2}$/.test(p.data||"")?shortD(p.data):(p.data||"");
     var ppl=p.ad?(p.ad+" pessoa"+(+p.ad>1?"s":"")+(+p.ch?" + "+p.ch+" criança"+(+p.ch>1?"s":""):"")):"";
     var onde=[p.cidadeAprox,p.estadoAprox].filter(Boolean).join(" - ");
-    h+='<div class="acc-p'+(p.contatado?" done":"")+'"><div class="acc-pt"><b>'+esc(p.name)+'</b><span class="acc-tag '+(p.tipo==="particular"?"pt":"")+'">'+(p.tipo==="particular"?"Guia particular":"Reserva")+'</span></div>'+
+    var ph=String(p.phone||"").replace(/\D/g,""),phF=ph.length>=10?"("+ph.slice(0,2)+") "+ph.slice(2,ph.length-4)+"-"+ph.slice(-4):"";
+    var first=String(p.name||"").split(" ")[0]||"tudo bem";
+    var oque=p.tipo==="particular"?"um passeio com guia particular":"a trilha "+(p.trilha||"");
+    var msgW=sent?"Oi, "+first+"! Aqui é o Bruno, dos Leopardos das Montanhas 🐆 Recebi seu pedido para "+oque+(dt?" ("+dt+")":"")+". Vamos combinar?":"Oi, "+first+"! Aqui é o Bruno, dos Leopardos das Montanhas 🐆 Vi que você começou a pedir "+oque+" pelo site"+(dt?" para "+dt:"")+". Posso te ajudar a fechar? Tenho as informações e tiro suas dúvidas.";
+    var wa=ph.length>=10?"https://wa.me/"+(ph.length<=11?"55"+ph:ph)+"?text="+encodeURIComponent(msgW):"";
+    h+='<div class="acc-p'+(p.contatado?" done":"")+'"><div class="acc-pt"><b>'+esc(p.name||"(sem nome)")+'</b><span class="acc-tag '+(p.tipo==="particular"?"pt":"")+'">'+(p.tipo==="particular"?"Guia particular":"Reserva")+'</span><span class="acc-st '+(sent?"ok":"no")+'">'+(sent?"📩 Enviou":"🕓 Não enviou")+'</span></div>'+
       '<p>'+[p.trilha,dt?"📅 "+dt:"",ppl?"👥 "+ppl:"",p.para||"",p.transp==="sim"?"precisa de transporte":""].filter(Boolean).map(esc).join(" · ")+'</p>'+(p.obs?'<p class="acc-obs">“'+esc(p.obs)+'”</p>':'')+
-      '<small>'+q+(onde?" · perto de "+esc(onde):"")+'</small><div class="ad-actions"><button type="button" class="linkbtn" data-pc="'+esc(p.id)+'" data-v="'+(p.contatado?"":"1")+'">'+(p.contatado?"✓ Respondido":"Marcar como respondido")+'</button><button type="button" class="linkbtn danger" data-pdel="'+esc(p.id)+'">Apagar</button></div></div>'});
+      '<small>'+(sent?"Enviou em "+fmtT(p.enviadoEm||p.atualizado):"Preencheu em "+fmtT(p.atualizado||p.criado))+(phF?" · "+phF:"")+(onde?" · perto de "+esc(onde):"")+'</small>'+
+      '<div class="ad-actions">'+(wa?'<a class="btn btn-amber acc-wa" href="'+wa+'" target="_blank" rel="noopener" data-pcw="'+esc(p.id)+'">'+(sent?"Responder no WhatsApp":"Chamar no WhatsApp")+'</a>':'')+'<button type="button" class="linkbtn" data-pc="'+esc(p.id)+'" data-v="'+(p.contatado?"":"1")+'">'+(p.contatado?"✓ Já falei":"Marcar como já falei")+'</button><button type="button" class="linkbtn danger" data-pdel="'+esc(p.id)+'">Apagar</button></div></div>'});
   h+='</div>';
   var top=function(o,lab,map){var k=Object.keys(o||{}).sort(function(a,b){return o[b]-o[a]}).slice(0,8),tot=k.reduce(function(a,x){return a+o[x]},0);
     if(!k.length)return '<div class="acc-card"><h4>'+lab+'</h4><p class="acc-empty">Sem dados ainda.</p></div>';
@@ -3571,8 +3601,9 @@ function drawAcessos(){var j=ACC.data,box=$("ad-body");var sum=function(k){retur
   h+='<div class="acc-grid">'+top(j.origem,"De onde vieram",function(x){return src[x]||x})+top(j.dispositivo,"Aparelho",function(x){return x==="celular"?"📱 Celular":"💻 Computador"})+top(j.cidade,"Cidades",cid)+top(j.estado,"Estados",cid)+top(j.trilhaReserva,"Trilhas mais pedidas")+top(j.trilhaEspera,"Fila de espera por trilha")+'</div>';
   h+='<p class="help" style="font-size:12.5px">'+(tr?tr+" abertura"+(tr>1?"s":"")+" da página de trilhas no período. ":"")+'Cidade e estado são aproximados (vêm da internet da pessoa). O contador não guarda IP nem dados pessoais de quem só visita.</p>';
   box.innerHTML=h}
-$("ad-body").addEventListener("click",function(e){if(adminTab!=="acessos")return;var b=e.target.closest("button");if(!b)return;
+$("ad-body").addEventListener("click",function(e){if(adminTab!=="acessos")return;var lw=e.target.closest("[data-pcw]");if(lw){var idw=lw.dataset.pcw;(ACC.data.pedidos||[]).forEach(function(p){if(p.id===idw&&!p.contatado){p.contatado=String(Date.now());apiStats({acao:"contatado",id:idw,valor:true}).catch(function(){})}});setTimeout(drawAcessos,300);return}var b=e.target.closest("button");if(!b)return;
   if(b.dataset.per){ACC.per=+b.dataset.per;renderAcessos();return}
+  if(b.dataset.f&&b.closest(".acc-f")){ACC.f=b.dataset.f;drawAcessos();return}
   if(b.id==="acc-re"){renderAcessos();return}
   if(b.dataset.pc!=null){var id=b.dataset.pc,v=!!b.dataset.v;(ACC.data.pedidos||[]).forEach(function(p){if(p.id===id)p.contatado=v?String(Date.now()):""});drawAcessos();apiStats({acao:"contatado",id:id,valor:v}).catch(function(){toast("Sem conexão.")});return}
   if(b.dataset.pdel!=null){if(!confirm("Apagar esse pedido da lista?"))return;var d=b.dataset.pdel;ACC.data.pedidos=(ACC.data.pedidos||[]).filter(function(p){return p.id!==d});drawAcessos();apiStats({acao:"apagar",id:d}).catch(function(){toast("Sem conexão.")})}});

@@ -16,7 +16,7 @@ export default async function handler(req, res) {
     const id = clean(b.id, 40).replace(/[^\w-]/g, "");
     const tipo = TIPOS.has(b.tipo) ? b.tipo : "reserva";
     const name = clean(b.name, 80), phone = clean(b.phone, 20).replace(/\D/g, "");
-    if (!id || !name) return res.status(204).end();
+    if (!id || (name.length < 2 && phone.length < 10)) return res.status(204).end();
     const key = `leo:lead:${id}`;
     const [apagado, existe] = await pipeline([["EXISTS", `leo:leadx:${id}`], ["EXISTS", key]]);
     if (apagado) return res.status(204).end();
