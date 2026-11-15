@@ -1681,6 +1681,12 @@ html.adm-only body{overflow:hidden}
 #tm-frame.soon .pm-hint,#tm-frame.soon .tm3-l,#tm-frame.soon .tmap-l{display:none!important}
 #tm-frame.soon .tmap::after{content:"EM BREVE";position:absolute;left:50%;top:38%;transform:translate(-50%,-50%) rotate(-6deg);background:rgba(14,42,46,.82);color:#fff;font-family:"Big Shoulders Display",sans-serif;font-weight:900;font-size:clamp(28px,6vw,54px);letter-spacing:.08em;padding:.15em .6em;border-radius:14px;border:2px solid #E8B23A;pointer-events:none;z-index:4;backdrop-filter:blur(4px)}
 @media (max-width:600px){.opn-soon .btn{width:100%}}
+
+.fld .ad-vpick{cursor:pointer;display:inline-flex;margin:0;padding:11px 16px;font-size:14px}
+.ad-vok{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:#e3f1e7;border-radius:12px;padding:10px 12px;font-weight:700;font-size:14px;color:#1f6b3d}
+.ad-vprog{margin-top:10px;position:relative;height:30px;border-radius:10px;background:#eef2ef;overflow:hidden}
+.ad-vprog i{position:absolute;left:0;top:0;bottom:0;width:0;background:#9cd3b0;transition:width .3s}
+.ad-vprog span{position:relative;display:block;line-height:30px;padding:0 12px;font-weight:700;font-size:13px}
 </style>
 </head>
 <body>
@@ -3466,11 +3472,11 @@ function renderAdmin(){
     h+='</div>';
   }
   if(adminTab==="videos"){
-    h+='<div class="ad-head"><p class="help" style="margin:0">Cole o link do Reels, do YouTube ou do TikTok. O vídeo abre direto no site.</p><button type="button" class="btn btn-amber" id="ad-vnew">+ Novo vídeo</button></div><div class="ad-list">';
+    h+='<div class="ad-head"><p class="help" style="margin:0">Envie o vídeo direto do celular (em pé, formato reels) ou cole o link do Reels, do YouTube ou do TikTok. Depois toque em <b>Salvar e publicar</b>.</p><button type="button" class="btn btn-amber" id="ad-vnew">+ Novo vídeo</button></div><div class="ad-list">';
     (DATA.videos||[]).forEach(function(v,i){var em=embedOf(v.link);
       h+='<div class="ad-item open"><div class="ad-form"><div class="grid2"><div class="fld"><label>Título</label><input data-vf="titulo" data-i="'+i+'" value="'+esc(v.titulo)+'" placeholder="Ex.: Manejo de jararaca"></div>'+
         '<div class="fld"><label>Bicho</label><select data-vf="bicho" data-i="'+i+'">'+Object.keys(BICHOS).map(function(k){return '<option value="'+k+'"'+(v.bicho===k?" selected":"")+'>'+BICHOS[k]+'</option>'}).join("")+'</select></div></div>'+
-        '<div class="fld"><label>Arquivo do vídeo</label><input data-vf="video" data-i="'+i+'" value="'+esc(v.video||"")+'" placeholder="videos/jararaca.mp4"><small class="fhelp">Vídeo em pé (formato reels), .mp4. Suba o arquivo na pasta <b>videos</b> do site e escreva o nome aqui. Também aceita link do Google Drive (compartilhado com qualquer pessoa).</small></div>'+
+        '<div class="fld"><label>Vídeo</label>'+(v.video?'<div class="ad-vok">🎬 '+(/vercel-storage\.com/.test(v.video)?"Vídeo enviado":esc(String(v.video).split("/").pop().slice(0,40)))+' <button type="button" class="linkbtn danger" data-vclr="'+i+'">Trocar</button></div>':'<label class="btn btn-amber ad-vpick"><input type="file" accept="video/*" data-vfile="'+i+'" hidden>📤 Enviar vídeo do celular</label><div class="ad-vprog" id="ad-vprog-'+i+'" hidden><i></i><span></span></div>')+'<small class="fhelp">Vídeo em pé (formato reels), até 400 MB. Também aceita link do Google Drive no campo abaixo.</small><input data-vf="video" data-i="'+i+'" value="'+esc(v.video||"")+'" placeholder="ou cole um link do Google Drive" style="margin-top:8px"></div>'+
         '<div class="fld"><label>Link do Instagram <span class="opt-t">(opcional, se não tiver o arquivo)</span></label><input data-vf="link" data-i="'+i+'" value="'+esc(v.link)+'" placeholder="https://www.instagram.com/reel/..." inputmode="url"><small class="fhelp">'+(v.link?(em?"✓ Vídeo do "+em.kind+" reconhecido":"Não reconheci o link. Use um link de Reels, YouTube ou TikTok."):"Sem link, o card leva para o seu Instagram.")+'</small></div>'+
         '<div class="fld"><label>Descrição curta <span class="opt-t">(opcional)</span></label><input data-vf="desc" data-i="'+i+'" value="'+esc(v.desc)+'"></div>'+
         '<div class="fld"><label>Capa do vídeo <span class="opt-t">(opcional: link de uma imagem)</span></label><input data-vf="capa" data-i="'+i+'" value="'+esc(v.capa||"")+'" placeholder="https://... (sem capa, aparece o desenho do bicho)" inputmode="url"></div>'+
@@ -3684,6 +3690,21 @@ $("ad-body").addEventListener("change",function(e){if(e.target.id==="ad-ffile"){
     var sc=document.querySelector("#admin .ad-scroll");sc.insertBefore(c,sc.firstChild)}
   if(ios)setTimeout(showCard,600);
 })();
+
+/* ---------- envio de vídeos (Vercel Blob) ---------- */
+var VUP=null;
+function uploadVideo(i,file){if(!file)return;var v=(DATA.videos||[])[i];if(!v)return;
+  if(!CONFIG.api){toast("O envio de vídeos funciona no site publicado, com o banco ligado.");return}
+  if(file.size>400*1024*1024){toast("Esse vídeo passa de 400 MB. Diminua a qualidade ou corte e tente de novo.");return}
+  var box=$("ad-vprog-"+i),bar=box&&box.querySelector("i"),tx=box&&box.querySelector("span");if(box){box.hidden=false;tx.textContent="Preparando…"}
+  var ext=(file.name.match(/\.(\w{2,5})$/)||[,"mp4"])[1].toLowerCase(),base=String(v.titulo||"video").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,40)||"video";
+  (VUP||(VUP=import("/blob-upload.js"))).then(function(m){
+    return m.upload("videos/"+base+"."+ext,file,{access:"public",handleUploadUrl:"/api/video",clientPayload:JSON.stringify({user:adminUser,pin:adminPin}),contentType:file.type||"video/mp4",multipart:file.size>8*1024*1024,
+      onUploadProgress:function(p){if(bar){bar.style.width=Math.round(p.percentage)+"%";tx.textContent="Enviando… "+Math.round(p.percentage)+"%"}}})})
+  .then(function(b){v.video=b.url;markDirty();renderAdmin();toast("Vídeo enviado! Toque em “Salvar e publicar”.")})
+  .catch(function(e){VUP=null;if(box)box.hidden=true;var m=String((e&&e.message)||e);toast(/Blob|espaço de vídeos/i.test(m)?"Falta ligar o espaço de vídeos na Vercel (veja o LEIA-ME).":/senha|Login/i.test(m)?"Entre de novo na Área do guia.":"Não deu para enviar o vídeo. Tente de novo com internet boa (de preferência Wi-Fi).");console.warn(e)})}
+$("ad-body").addEventListener("change",function(e){var f=e.target.closest&&e.target.closest("[data-vfile]");if(f){uploadVideo(+f.dataset.vfile,f.files&&f.files[0]);f.value=""}});
+$("ad-body").addEventListener("click",function(e){var c=e.target.closest&&e.target.closest("[data-vclr]");if(c){var v=DATA.videos[+c.dataset.vclr];if(v&&confirm("Trocar o vídeo? O atual sai deste card.")){v.video="";markDirty();renderAdmin()}}});
 /* ---------- inicialização ---------- */
 function refreshAll(){if(window.__heroRefresh)setTimeout(window.__heroRefresh,0);renderKm();if(state.tour&&!curTour()){state.tour=null;state.step=1;state.maxStep=1}renderTours();renderCross();renderVideos();renderGal();renderOpen();if(document.body.classList.contains('pg-trilhas'))renderTrailPage();if(window.__ptFill)window.__ptFill();refreshContacts();renderSteps();renderPanel();if(Object.keys(quiz).length)suggest()}
 (function(){var L=activeTours();for(var i=0;i<L.length;i++){if(upcoming(L[i]).some(function(x){return +x.vagas!==0})){CROSS.i=i;break}}})();

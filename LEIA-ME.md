@@ -27,6 +27,12 @@ A Área do guia pode ser instalada como app. Abra **www.leopardosdasmontanhas.co
 - **iPhone (Safari):** toque em **📲 Instalar app** e siga: botão **Compartilhar** → **Adicionar à Tela de Início** → **Adicionar**.
 O ícone **Leopardos** fica junto dos outros apps e abre direto na Área do guia, em tela cheia. Arquivos: `adm.webmanifest`, `adm-sw.js` e os ícones `adm-*.png`.
 
+## Vídeos enviados pelo celular (espaço de vídeos)
+Na aba **Vídeos** da Área do guia, o botão **📤 Enviar vídeo do celular** manda o vídeo direto para o espaço de vídeos da Vercel (Blob), até 400 MB. Para funcionar, o espaço precisa estar ligado ao projeto (uma vez só):
+1. Abra https://vercel.com/lobragancas-projects/leopardodasmontanhas/stores → **Create Database** → **Blob** → **Continue**.
+2. Nome `leopardos-videos`, acesso **Public** → **Create** → ligue ao projeto (deixe o prefixo como vier) → **Connect**.
+3. https://vercel.com/lobragancas-projects/leopardodasmontanhas/deployments → ⋯ do primeiro → **Redeploy**.
+
 ## Ligar o banco na Vercel (uma vez só, uns 3 minutos)
 Sem o banco, o site funciona em **modo de teste**: o que se salva fica só no aparelho de quem editou e a aba Acessos fica desligada.
 1. Abra https://vercel.com/marketplace/upstash e toque em **Install** (ou **Add Integration**).
