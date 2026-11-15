@@ -1720,6 +1720,15 @@ html.adm-only body{overflow:hidden}
 .reel:hover .rl-play{transform:translate(-50%,-50%) scale(1.08)!important}
 .reel.playing .rl-play{opacity:0}
 .reel.playing.paused .rl-play{opacity:1}
+
+.vz-box{max-width:420px}.vz-box h3{margin:2px 0 8px}.vz-box .btn{width:100%;margin-top:6px}.vz-box .linkbtn{display:block;margin:12px auto 0}
+.vz-tip{font-size:13px}
+.vz-prog{position:relative;height:34px;border-radius:12px;background:#eef2ef;overflow:hidden;margin-top:8px}
+.vz-prog i{position:absolute;left:0;top:0;bottom:0;width:0;background:#9cd3b0;transition:width .4s}
+.vz-prog span{position:relative;display:block;line-height:34px;padding:0 12px;font-weight:800;font-size:13.5px}
+
+.reel .rl-vid{pointer-events:none}
+.reel .rl-snd{position:absolute;right:12px;top:12px;z-index:3;width:38px;height:38px;border-radius:50%;background:rgba(0,0,0,.45);display:grid;place-items:center;font-size:17px;backdrop-filter:blur(4px)}
 </style>
 </head>
 <body>
@@ -2627,14 +2636,15 @@ function renderVideos(){
   MJ.list=mjFilt();
   var h="";MJ.list.forEach(function(v,i){var vs=vidSrc(v),cov=v.capa&&/^https?:|^data:image|^[\w\/.-]+\.(jpe?g|png|webp)$/i.test(v.capa);
     h+='<button type="button" class="reel '+(v.bicho||"outro")+'" data-ri="'+i+'" aria-label="Assistir: '+esc(v.titulo)+'">'+
-      ((cov?'<img class="rl-art" src="'+esc(v.capa)+'" alt="" loading="lazy">':'<span class="rl-art"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(BICHO_ICON[v.bicho]||BICHO_ICON.outro)+'</svg></span>'))+
-      (vs||v.link?'<span class="rl-play"><svg viewBox="0 0 16 16" width="14" height="14"><path d="M4.5 2.5v11l9-5.5z" fill="currentColor"/></svg></span>':'<span class="rl-soon">vídeo em breve</span>')+
+      (vs&&vs.kind==="file"?'<video class="rl-vid" muted loop playsinline preload="metadata" data-src="'+esc(vs.src)+'"></video><span class="rl-snd" aria-hidden="true">🔇</span>':(cov?'<img class="rl-art" src="'+esc(v.capa)+'" alt="" loading="lazy">':'<span class="rl-art"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(BICHO_ICON[v.bicho]||BICHO_ICON.outro)+'</svg></span>'))+
+      (vs&&vs.kind==="file"?'':vs||v.link?'<span class="rl-play"><svg viewBox="0 0 16 16" width="14" height="14"><path d="M4.5 2.5v11l9-5.5z" fill="currentColor"/></svg></span>':'<span class="rl-soon">vídeo em breve</span>')+
       '<span class="rl-meta"><span class="rl-ep">Ep. '+String(i+1).padStart(2,"0")+' · '+(BICHOS[v.bicho]||"Fauna")+'</span><b>'+esc(v.titulo||"Vídeo")+'</b></span></button>'});
   $("videos").innerHTML=h||'<p style="color:#C9F0DA;padding:20px">Nenhum vídeo nesta categoria ainda.</p>';
   $("videos").scrollLeft=0;reelObs()}
-var _ro;function reelObs(){if(_ro)_ro.disconnect();if(!("IntersectionObserver" in window))return;
-  _ro=new IntersectionObserver(function(es){es.forEach(function(e){var vd=e.target.querySelector(".rl-vid");if(!vd)return;
-    if(!e.isIntersecting&&!vd.paused){vd.pause();e.target.classList.add("paused")}})},{threshold:[0,.6,1]});
+var _ro,_rvis=new Map();function reelObs(){if(_ro)_ro.disconnect();_rvis=new Map();if(!("IntersectionObserver" in window))return;
+  _ro=new IntersectionObserver(function(es){es.forEach(function(e){_rvis.set(e.target,e.isIntersecting?e.intersectionRatio:0);var vd=e.target.querySelector(".rl-vid");if(vd&&e.isIntersecting&&!vd.getAttribute("src")){vd.src=vd.dataset.src+"#t=0.1"}});
+    var best=null,br=.55;$("videos").querySelectorAll(".reel").forEach(function(r){var k=_rvis.get(r)||0;if(r.querySelector(".rl-vid")&&k>br+.01){br=k;best=r}});
+    $("videos").querySelectorAll(".rl-vid").forEach(function(vd){var r=vd.closest(".reel");if(r===best&&!reduce){var p=vd.play();if(p&&p.catch)p.catch(function(){})}else if(!vd.paused){vd.pause()}})},{threshold:[0,.3,.55,.7,.85,1],rootMargin:"0px 200px"});
   $("videos").querySelectorAll(".reel").forEach(function(r){_ro.observe(r)})}
 function openReel(i){var L=MJ.list;if(!L.length)return;MJ.i=(i+L.length)%L.length;var v=L[MJ.i],vs=vidSrc(v),em=embedOf(v.link),st=$("rv-stage"),h;
   if(vs&&vs.kind==="file")h='<video src="'+esc(vs.src)+'" playsinline autoplay controls loop '+(v.capa?'poster="'+esc(v.capa)+'"':'')+'></video>';
@@ -2651,6 +2661,8 @@ $("videos").addEventListener("click",function(e){var b=e.target.closest("[data-r
 function stopInline(except){document.querySelectorAll("#videos .reel.playing").forEach(function(r){if(r===except)return;var vd=r.querySelector(".rl-vid");if(vd){vd.pause();r.classList.add("paused")}else{var f=r.querySelector(".rl-frame");if(f)f.remove();r.classList.remove("playing","paused")}})}
 function playInline(card,i){var v=MJ.list[i];if(!v)return;var vs=vidSrc(v),em=embedOf(v.link);
   var vd=card.querySelector(".rl-vid");
+  if(vd&&vd.classList.contains("rl-vid")&&card.querySelector(".rl-snd")){var on=vd.muted;document.querySelectorAll("#videos .rl-vid").forEach(function(o){if(o!==vd){o.muted=true;var sn=o.parentNode.querySelector(".rl-snd");if(sn)sn.textContent="🔇"}});
+    vd.muted=!on;card.querySelector(".rl-snd").textContent=vd.muted?"🔇":"🔊";if(!vd.getAttribute("src"))vd.src=vd.dataset.src;if(vd.paused){var pp=vd.play();if(pp&&pp.catch)pp.catch(function(){})}return}
   if(vd){if(vd.paused){stopInline(card);var p=vd.play();if(p&&p.catch)p.catch(function(){});card.classList.remove("paused")}else{vd.pause();card.classList.add("paused")}return}
   if(card.querySelector(".rl-frame"))return;
   stopInline(card);
@@ -3522,7 +3534,7 @@ function renderAdmin(){
     (DATA.videos||[]).forEach(function(v,i){var em=embedOf(v.link);
       h+='<div class="ad-item open"><div class="ad-form"><div class="grid2"><div class="fld"><label>Título</label><input data-vf="titulo" data-i="'+i+'" value="'+esc(v.titulo)+'" placeholder="Ex.: Manejo de jararaca"></div>'+
         '<div class="fld"><label>Bicho</label><select data-vf="bicho" data-i="'+i+'">'+Object.keys(BICHOS).map(function(k){return '<option value="'+k+'"'+(v.bicho===k?" selected":"")+'>'+BICHOS[k]+'</option>'}).join("")+'</select></div></div>'+
-        '<div class="fld"><label>Vídeo</label>'+(v.video?'<div class="ad-vok">🎬 '+(/vercel-storage\.com/.test(v.video)?"Vídeo enviado":esc(String(v.video).split("/").pop().slice(0,40)))+' <button type="button" class="linkbtn danger" data-vclr="'+i+'">Trocar</button></div>':'<label class="btn btn-amber ad-vpick"><input type="file" accept="video/*" data-vfile="'+i+'" hidden>📤 Enviar vídeo do celular</label><div class="ad-vprog" id="ad-vprog-'+i+'" hidden><i></i><span></span></div>')+'<small class="fhelp">Vídeo em pé (formato reels), até 400 MB. Também aceita link do Google Drive no campo abaixo.</small><input data-vf="video" data-i="'+i+'" value="'+esc(v.video||"")+'" placeholder="ou cole um link do Google Drive" style="margin-top:8px"></div>'+
+        '<div class="fld"><label>Vídeo</label>'+(v.video?'<div class="ad-vok">🎬 '+(/vercel-storage\.com/.test(v.video)?"Vídeo enviado":esc(String(v.video).split("/").pop().slice(0,40)))+' <button type="button" class="linkbtn danger" data-vclr="'+i+'">Trocar</button>'+(/vercel-storage\.com/.test(v.video)?'<button type="button" class="linkbtn" data-vshr="'+i+'">📉 Diminuir este vídeo</button>':'')+'</div><div class="ad-vprog" id="ad-vprog-'+i+'" hidden><i></i><span></span></div>':'<label class="btn btn-amber ad-vpick"><input type="file" accept="video/*" data-vfile="'+i+'" hidden>📤 Enviar vídeo do celular</label><div class="ad-vprog" id="ad-vprog-'+i+'" hidden><i></i><span></span></div>')+'<small class="fhelp">Vídeo em pé (formato reels), até 400 MB. Também aceita link do Google Drive no campo abaixo.</small><input data-vf="video" data-i="'+i+'" value="'+esc(v.video||"")+'" placeholder="ou cole um link do Google Drive" style="margin-top:8px"></div>'+
         '<div class="fld"><label>Link do Instagram <span class="opt-t">(opcional, se não tiver o arquivo)</span></label><input data-vf="link" data-i="'+i+'" value="'+esc(v.link)+'" placeholder="https://www.instagram.com/reel/..." inputmode="url"><small class="fhelp">'+(v.link?(em?"✓ Vídeo do "+em.kind+" reconhecido":"Não reconheci o link. Use um link de Reels, YouTube ou TikTok."):"Sem link, o card leva para o seu Instagram.")+'</small></div>'+
         '<div class="fld"><label>Descrição curta <span class="opt-t">(opcional)</span></label><input data-vf="desc" data-i="'+i+'" value="'+esc(v.desc)+'"></div>'+
         '<div class="fld"><label>Capa do vídeo</label><div class="ad-cap">'+(v.capa?'<img src="'+esc(v.capa)+'" alt="">':'<span class="ad-cap0">sem capa</span>')+'<div class="ad-capb">'+(v.video&&!/drive\.google/.test(v.video)?'<button type="button" class="btn btn-ghost" data-vcap="'+i+'">🎞️ Escolher capa no vídeo</button>':'')+'<label class="btn btn-ghost"><input type="file" accept="image/*" data-vcapf="'+i+'" hidden>📷 Escolher foto</label></div></div><small class="fhelp">A capa aparece no card do site. O vídeo só carrega quando a pessoa toca, assim o site fica leve.</small><input type="hidden" data-vf="capa" data-i="'+i+'" value="'+esc(v.capa||"")+'"></div>'+
@@ -3601,7 +3613,8 @@ $("ad-save").onclick=function(){if(window.__vbusy){toast("Espere o vídeo termin
   var b=$("ad-save");b.disabled=true;b.textContent="Salvando…";
   TOURS.forEach(function(t){t.datas=(t.datas||[]).filter(function(x){return x.d})});
   saveData(adminPin).then(function(r){b.disabled=false;b.textContent="Salvar e publicar";
-    if(r&&r.ok){dirty=false;b.classList.remove("pulse");toast(r.local?"Salvo neste navegador":"Publicado no site!");refreshAll();renderAdmin()}
+    if(r&&r.ok){dirty=false;b.classList.remove("pulse");toast(r.local?"Salvo neste navegador":"Publicado no site!");refreshAll();renderAdmin();
+      var used=JSON.stringify(DATA);(window.__vdel||[]).forEach(function(u){if(used.indexOf(u)<0)fetch("/api/video",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({acao:"apagar",url:u,user:adminUser,pin:adminPin})}).catch(function(){})});window.__vdel=[]}
     else toast(r&&r.error==="pin"?"Senha incorreta. Entre de novo.":"Não deu para salvar. Tente de novo.")})
   .catch(function(){b.disabled=false;b.textContent="Salvar e publicar";toast("Sem conexão. Tente de novo.")});
 };
@@ -3771,9 +3784,60 @@ function framePicker(i){var v=DATA.videos[i];if(!v||!v.video)return;
     catch(e){ld.hidden=false;ld.textContent="Esse vídeo não deixa tirar a capa aqui. Use “Escolher foto”."}});
   vd.src=v.video;try{var p=vd.play();if(p&&p.then)p.then(function(){vd.pause()}).catch(function(){})}catch(e){}}
 $("ad-body").addEventListener("change",function(e){var f=e.target.closest&&e.target.closest("[data-vcapf]");if(!f||!f.files||!f.files[0])return;var i=+f.dataset.vcapf;shrinkImg(f.files[0],900,.8).then(function(d){return saveCapa(i,d)}).then(function(){toast("Capa trocada. Toque em “Salvar e publicar”.")}).catch(function(){toast("Não consegui abrir essa foto.")});f.value=""});
+
+$("ad-body").addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("[data-vshr]");if(!b)return;var i=+b.dataset.vshr,v=DATA.videos[i];if(!v||!v.video)return;
+  if(!canShrinkVideo()){toast("Este celular não consegue diminuir vídeos. Tente pelo computador.");return}
+  b.disabled=true;b.textContent="Baixando o vídeo…";
+  fetch(v.video).then(function(r){if(!r.ok)throw new Error("baixar "+r.status);return r.blob()}).then(function(bl){b.disabled=false;b.textContent="📉 Diminuir este vídeo";
+    var f=new File([bl],"video.mp4",{type:bl.type||"video/mp4"});window.VZ_MIN=0;uploadVideo(i,f);window.VZ_MIN=null})
+  .catch(function(err){b.disabled=false;b.textContent="📉 Diminuir este vídeo";toast("Não consegui baixar o vídeo para diminuir. Use “Trocar” e envie de novo.");console.warn(err)})});
 /* ---------- envio de vídeos (Vercel Blob) ---------- */
-var VUP=null;
+/* ---------- diminuir o vídeo antes de enviar (720p, no próprio celular) ---------- */
+function canShrinkVideo(){try{return !!(window.MediaRecorder&&HTMLCanvasElement.prototype.captureStream&&(window.AudioContext||window.webkitAudioContext))}catch(e){return false}}
+function recMime(){var L=["video/mp4;codecs=avc1.42E01F,mp4a.40.2","video/mp4;codecs=avc1,mp4a.40.2","video/mp4","video/webm;codecs=vp9,opus","video/webm;codecs=vp8,opus","video/webm"];for(var k=0;k<L.length;k++){try{if(MediaRecorder.isTypeSupported(L[k]))return L[k]}catch(e){}}return ""}
+function shrinkVideo(file,onProg,ctl){return new Promise(function(ok,bad){
+  var mime=recMime();if(!mime)return bad(new Error("sem gravador"));
+  var url=URL.createObjectURL(file),v=document.createElement("video"),AC=window.AudioContext||window.webkitAudioContext,ac=new AC(),stopped=false,rec=null,last=Date.now(),wl=null;
+  v.playsInline=true;v.setAttribute("playsinline","");v.preload="auto";v.src=url;v.style.cssText="position:fixed;left:0;bottom:0;width:4px;height:4px;opacity:.01;pointer-events:none;z-index:-1";document.body.appendChild(v);
+  var dest=ac.createMediaStreamDestination();try{ac.createMediaElementSource(v).connect(dest)}catch(e){}
+  var c=document.createElement("canvas"),g=c.getContext("2d");
+  function end(err,blob){if(stopped&&!blob&&!err)return;stopped=true;clearInterval(watch);try{v.pause()}catch(e){}try{ac.close()}catch(e){}URL.revokeObjectURL(url);v.remove();try{wl&&wl.release()}catch(e){}if(err)bad(err);else ok(blob)}
+  ctl.cancel=function(){if(rec&&rec.state!=="inactive"){stopped=true;rec.onstop=null;try{rec.stop()}catch(e){}}end(new Error("cancelado"))};
+  var watch=setInterval(function(){if(Date.now()-last>25000)end(new Error("travou"))},3000);
+  try{if(navigator.wakeLock)navigator.wakeLock.request("screen").then(function(x){wl=x}).catch(function(){})}catch(e){}
+  function draw(){if(stopped)return;try{g.drawImage(v,0,0,c.width,c.height)}catch(e){}if(v.duration){onProg(Math.min(1,v.currentTime/v.duration));last=Date.now()}
+    requestAnimationFrame(draw)}
+  function start(){var w=v.videoWidth,h=v.videoHeight;if(!w||!h)return end(new Error("sem imagem"));var k=Math.min(1,1280/Math.max(w,h));c.width=Math.round(w*k/2)*2;c.height=Math.round(h*k/2)*2;
+    var tr=c.captureStream(30).getVideoTracks().concat(dest.stream.getAudioTracks());
+    try{rec=new MediaRecorder(new MediaStream(tr),{mimeType:mime,videoBitsPerSecond:2500000,audioBitsPerSecond:128000})}catch(e){return end(e)}
+    var chunks=[];rec.ondataavailable=function(e){if(e.data&&e.data.size)chunks.push(e.data)};
+    rec.onstop=function(){end(null,new Blob(chunks,{type:mime.split(";")[0]}))};
+    v.onended=function(){if(rec.state!=="inactive")rec.stop()};
+    rec.start(1000);g.drawImage(v,0,0,c.width,c.height);var p=v.play();if(p&&p.catch)p.catch(function(e){end(e)});draw()}
+  v.onerror=function(){end(new Error("formato"))};
+  // o play precisa acontecer no toque do botão (regra do iPhone)
+  try{ac.resume&&ac.resume()}catch(e){}
+  var p0=v.play();if(p0&&p0.then)p0.then(function(){start()}).catch(function(e){end(e)});else v.addEventListener("loadeddata",start,{once:true})})}
 function uploadVideo(i,file){if(!file)return;var v=(DATA.videos||[])[i];if(!v)return;
+  var mb=file.size/1048576;if(mb<(window.VZ_MIN||25)||!canShrinkVideo())return sendVideo(i,file);
+  var m=document.createElement("div");m.className="modal ins-m";
+  m.innerHTML='<div class="wbox vz-box"><button type="button" class="xbtn" aria-label="Fechar">×</button><span class="hand">vídeo grande</span><h3>Diminuir antes de enviar?</h3>'+
+    '<p class="help">Esse vídeo tem <b>'+mb.toFixed(0)+' MB</b>. Diminuindo para 720p (qualidade boa no celular) ele fica uns <b>'+Math.max(3,Math.round(mb/6))+' MB ou menos</b>: carrega rápido no site e cabe muito mais vídeo no espaço grátis.</p>'+
+    '<p class="help vz-tip">Leva mais ou menos o tempo do próprio vídeo. Deixe a tela ligada e o Adm aberto até terminar.</p>'+
+    '<div class="vz-prog" hidden><i></i><span>Diminuindo… 0%</span></div>'+
+    '<button type="button" class="btn btn-amber vz-go">Diminuir e enviar (recomendado)</button><button type="button" class="linkbtn vz-orig">Enviar o original ('+mb.toFixed(0)+' MB)</button></div>';
+  document.body.appendChild(m);var ctl={},busy=false,bar=m.querySelector(".vz-prog i"),tx=m.querySelector(".vz-prog span");
+  function close(){if(busy&&ctl.cancel)ctl.cancel();m.remove()}
+  m.addEventListener("click",function(e){if(e.target===m||e.target.closest(".xbtn")){close();return}
+    if(e.target.closest(".vz-orig")){m.remove();sendVideo(i,file);return}
+    if(e.target.closest(".vz-go")&&!busy){busy=true;m.querySelector(".vz-go").hidden=true;m.querySelector(".vz-orig").hidden=true;m.querySelector(".vz-prog").hidden=false;window.__vbusy=1;
+      shrinkVideo(file,function(p){bar.style.width=Math.round(p*100)+"%";tx.textContent="Diminuindo… "+Math.round(p*100)+"%"},ctl).then(function(b){busy=false;window.__vbusy=0;m.remove();
+        var out=b.size>0&&b.size<file.size*.9?b:file;if(out===file)toast("Esse vídeo já estava leve. Enviando o original.");else toast("Ficou com "+(b.size/1048576).toFixed(1)+" MB. Enviando…");
+        var ext=/mp4/.test(out.type)?"mp4":/webm/.test(out.type)?"webm":"";var f2=out===file?file:new File([out],"video."+(ext||"mp4"),{type:out.type||"video/mp4"});sendVideo(i,f2)})
+      .catch(function(err){busy=false;window.__vbusy=0;if(String(err&&err.message)==="cancelado")return;m.querySelector(".vz-prog").hidden=true;var o=m.querySelector(".vz-orig");o.hidden=false;o.textContent="Enviar o original ("+mb.toFixed(0)+" MB)";m.querySelector(".vz-tip").textContent="Não deu para diminuir esse vídeo neste celular. Você pode enviar o original ou diminuir antes num app de edição.";console.warn(err)})}})}
+
+var VUP=null;
+function sendVideo(i,file){if(!file)return;var v=(DATA.videos||[])[i];if(!v)return;
   if(!CONFIG.api){toast("O envio de vídeos funciona no site publicado, com o banco ligado.");return}
   if(file.size>400*1024*1024){toast("Esse vídeo passa de 400 MB. Diminua a qualidade ou corte e tente de novo.");return}
   var box=$("ad-vprog-"+i),bar=box&&box.querySelector("i"),tx=box&&box.querySelector("span");if(box){box.hidden=false;box.classList.remove("err");tx.textContent="Preparando o envio de "+(file.size/1048576).toFixed(0)+" MB…"}window.__vbusy=1;
@@ -3782,11 +3846,11 @@ function uploadVideo(i,file){if(!file)return;var v=(DATA.videos||[])[i];if(!v)re
   (VUP||(VUP=import("/blob-upload.js"))).then(function(m){
     return m.upload("videos/"+base+"."+ext,file,{access:"public",handleUploadUrl:"/api/video",clientPayload:JSON.stringify({user:adminUser,pin:adminPin}),contentType:file.type||"video/mp4",multipart:file.size>8*1024*1024,
       onUploadProgress:function(p){if(bar){bar.style.width=Math.round(p.percentage)+"%";tx.textContent="Enviando… "+Math.round(p.percentage)+"%"}}})})
-  .then(function(b){window.__vbusy=0;v.video=b.url;markDirty();renderAdmin();toast("Vídeo enviado! Toque em “Salvar e publicar”.")})
+  .then(function(b){window.__vbusy=0;if(v.video&&/vercel-storage\.com/.test(v.video))(window.__vdel=window.__vdel||[]).push(v.video);v.video=b.url;markDirty();renderAdmin();toast("Vídeo enviado! Toque em “Salvar e publicar”.")})
   .catch(function(e){window.__vbusy=0;VUP=null;var m=String((e&&e.message)||e);var nice=/Blob|espaço de vídeos|token/i.test(m)?"Falta ligar o espaço de vídeos na Vercel.":/senha|Login/i.test(m)?"Entre de novo na Área do guia.":"Não deu para enviar o vídeo.";
     if(box){box.hidden=false;box.classList.add("err");bar.style.width="0";tx.innerHTML=esc(nice)+'<small>Detalhe: '+esc(m.slice(0,160))+'</small>'}toast(nice);console.warn(e)})}
 $("ad-body").addEventListener("change",function(e){var f=e.target.closest&&e.target.closest("[data-vfile]");if(f){uploadVideo(+f.dataset.vfile,f.files&&f.files[0]);f.value=""}});
-$("ad-body").addEventListener("click",function(e){var c=e.target.closest&&e.target.closest("[data-vclr]");if(c){var v=DATA.videos[+c.dataset.vclr];if(v&&confirm("Trocar o vídeo? O atual sai deste card.")){v.video="";markDirty();renderAdmin()}}});
+$("ad-body").addEventListener("click",function(e){var c=e.target.closest&&e.target.closest("[data-vclr]");if(c){var v=DATA.videos[+c.dataset.vclr];if(v&&confirm("Trocar o vídeo? O atual sai deste card.")){if(/vercel-storage\.com/.test(v.video||""))(window.__vdel=window.__vdel||[]).push(v.video);v.video="";markDirty();renderAdmin()}}});
 /* ---------- inicialização ---------- */
 function refreshAll(){if(window.__heroRefresh)setTimeout(window.__heroRefresh,0);renderKm();if(state.tour&&!curTour()){state.tour=null;state.step=1;state.maxStep=1}renderTours();renderCross();renderVideos();renderGal();renderOpen();if(document.body.classList.contains('pg-trilhas'))renderTrailPage();if(window.__ptFill)window.__ptFill();refreshContacts();renderSteps();renderPanel();if(Object.keys(quiz).length)suggest()}
 (function(){var L=activeTours();for(var i=0;i<L.length;i++){if(upcoming(L[i]).some(function(x){return +x.vagas!==0})){CROSS.i=i;break}}})();

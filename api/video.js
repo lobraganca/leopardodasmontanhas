@@ -1,4 +1,5 @@
 import { handleUpload } from "@vercel/blob/client";
+import { del } from "@vercel/blob";
 import { credOk } from "./_db.js";
 
 // Envio de vídeos pela Área do guia, direto do celular para o Vercel Blob
@@ -18,6 +19,13 @@ export default async function handler(req, res) {
   if (!token) return res.status(503).json({ error: "Falta ligar o espaço de vídeos (Blob) na Vercel." });
   let body = req.body;
   if (typeof body === "string") { try { body = JSON.parse(body || "{}"); } catch { body = {}; } }
+  if (body && body.acao === "apagar") {
+    if (!credOk(body.user, body.pin)) return res.status(401).json({ error: "pin" });
+    const u = String(body.url || "");
+    if (!/^https:\/\/[\w.-]+\.public\.blob\.vercel-storage\.com\/videos\//.test(u)) return res.status(400).json({ error: "url" });
+    try { await del(u, { token }); } catch {}
+    return res.status(200).json({ ok: true });
+  }
   try {
     const out = await handleUpload({
       body,
