@@ -6,7 +6,7 @@
 <title>Leopardos das Montanhas · Trilhas e Cachoeiras</title>
 <meta name="description" content="Trilhas guiadas e imersões em cachoeiras com os Leopardos das Montanhas. Escolha sua expedição e reserve pelo WhatsApp.">
 <meta name="theme-color" content="#EEF5F1">
-<script>/* Área do guia como app no celular */if(/^\/adm\/?$/i.test(location.pathname)){document.write('<link rel="manifest" href="/adm.webmanifest"><link rel="apple-touch-icon" href="/adm-apple-icon.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Leopardos"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">');document.querySelector('meta[name=theme-color]').content="#123426"}</script>
+<script>/* Área do guia como app no celular */if(/^\/adm\/?$/i.test(location.pathname)){document.documentElement.className+=" adm-only";document.write('<link rel="manifest" href="/adm.webmanifest"><link rel="apple-touch-icon" href="/adm-apple-icon.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Leopardos"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">');document.querySelector('meta[name=theme-color]').content="#123426"}</script>
 <link rel="canonical" href="https://www.leopardosdasmontanhas.com.br/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pt_BR">
@@ -1630,6 +1630,10 @@ footer .credit .wrap{display:flex!important;flex-direction:column;align-items:ce
 .ins-ok{width:100%}
 @media (display-mode:standalone){.ad-inst{display:none!important}}
 #admin:has(#ad-icard) .ad-inst{display:none}
+
+/* /adm: só a Área do guia (o site fica parado por trás) */
+html.adm-only body > *:not(#admin):not(#toast):not(.ins-m){display:none!important}
+html.adm-only body{overflow:hidden}
 </style>
 </head>
 <body>
@@ -3030,7 +3034,7 @@ function initHero3D(){
   })();
 }
 var LPS_SRC=(typeof LPS_IMG!=="undefined")?LPS_IMG:"";
-(function(){function both(){initHero3D();try{initTrail3D()}catch(e){}}if(window.THREE)return both();var s=document.createElement("script");s.src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js";s.onload=both;s.onerror=function(){$("hero").classList.add("fallback")};document.head.appendChild(s)})();
+(function(){if(/^\/adm\/?$/i.test(location.pathname))return;function both(){initHero3D();try{initTrail3D()}catch(e){}}if(window.THREE)return both();var s=document.createElement("script");s.src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js";s.onload=both;s.onerror=function(){$("hero").classList.add("fallback")};document.head.appendChild(s)})();
 
 /* ============================================================
    ACABAMENTO — cursor, faixa cinética, trilha lateral, pegadas, rolagem
@@ -3171,7 +3175,7 @@ setTimeout(function(){var l=$("loader");if(l&&!IS_ADM){l.classList.add("out");do
 
 /* ---------- GSAP + Lenis (quando carregam) ---------- */
 function premium(){
-  if(!window.gsap||!window.ScrollTrigger||reduce)return;
+  if(!window.gsap||!window.ScrollTrigger||reduce||/^\/adm\/?$/i.test(location.pathname))return;
   gsap.registerPlugin(ScrollTrigger);
   if(window.Lenis){var lenis=new Lenis({duration:1.15,smoothWheel:true});window.__lenis=lenis;lenis.on("scroll",ScrollTrigger.update);gsap.ticker.add(function(t){lenis.raf(t*1000)});gsap.ticker.lagSmoothing(0);
     document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener("click",function(e){var id=a.getAttribute("href");if(id.length<2||id==="#area-do-guia")return;var el=document.querySelector(id);if(!el)return;e.preventDefault();scrollToId(el)})})}
@@ -3193,7 +3197,7 @@ function premium(){
 (function(){
   var libs=["https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js","https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js","https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"],i=0;
   function next(){if(i>=libs.length)return premium();var s=document.createElement("script");s.src=libs[i++];s.onload=next;s.onerror=next;document.head.appendChild(s)}
-  if(!reduce)next();
+  if(!reduce&&!/^\/adm\/?$/i.test(location.pathname))next();
 })();
 
 function openVideo(v){
