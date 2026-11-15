@@ -1655,6 +1655,20 @@ html.adm-only body{overflow:hidden}
 .acc-st{font-size:11.5px;font-weight:800;border-radius:99px;padding:2px 9px}.acc-st.ok{background:#e3f1e7;color:#1f6b3d}.acc-st.no{background:#fde4dc;color:#a03a1c}
 .acc-wa{padding:8px 14px;font-size:13px;text-decoration:none}
 .acc-p .ad-actions{justify-content:flex-start;align-items:center;flex-wrap:wrap;gap:10px 14px;margin-top:8px}
+
+/* guia particular: data, flexível, pessoas e transporte */
+.pt-when{display:flex;gap:8px;flex-wrap:wrap}
+.pt-date{position:relative;flex:1 1 190px;min-width:0;display:flex;align-items:center;gap:10px;border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;background:#fff;font-weight:700;font-size:15px;cursor:pointer;color:#0E2A2E;overflow:hidden}
+.pt-date svg{flex:none;color:#2E8A5C}
+.pt-date.empty #pt-dtxt{color:var(--ink-soft);font-weight:600}
+.pt-date.on{border-color:#0E2A2E;box-shadow:inset 0 0 0 1px #0E2A2E}
+.pt-date input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;border:0;padding:0;margin:0;min-width:0;-webkit-appearance:none;appearance:none;background:none}
+.pt-date input::-webkit-calendar-picker-indicator{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}
+.pt-tg{border:1.5px solid var(--line);background:#fff;border-radius:14px;padding:12px 14px;font:inherit;font-weight:700;font-size:14px;cursor:pointer;color:#0E2A2E;line-height:1.2}
+.pt-tg[aria-pressed="true"]{background:#0E2A2E;color:#fff;border-color:#0E2A2E}
+.pt-row{display:grid;grid-template-columns:auto 1fr;gap:8px}
+.pt-box{display:flex;align-items:center;justify-content:space-between;gap:14px;border:1.5px solid var(--line);border-radius:14px;padding:6px 8px 6px 14px;font-weight:700;font-size:14px;background:#fff}
+@media (max-width:440px){.pt-row{grid-template-columns:1fr}.pt-tg{text-align:left}.pt-when .pt-tg{flex:1 1 auto}}
 </style>
 </head>
 <body>
@@ -1880,10 +1894,14 @@ html.adm-only body{overflow:hidden}
       <div class="fld"><label>Para quem é?</label><div class="pt-chips" id="pt-tipo">
         <button type="button" data-v="Família ou amigos" aria-pressed="true">Família ou amigos</button><button type="button" data-v="Casal" aria-pressed="false">Casal</button><button type="button" data-v="Empresa / equipe" aria-pressed="false">Empresa</button><button type="button" data-v="Escola / projeto" aria-pressed="false">Escola</button><button type="button" data-v="Evento / aniversário" aria-pressed="false">Evento</button></div></div>
       <div class="fld"><label for="pt-trilha">Qual trilha?</label><select id="pt-trilha"></select></div>
-      <div class="grid2">
-        <div class="fld"><label for="pt-data">Data</label><input type="date" id="pt-data"><label class="check" style="margin-top:8px"><input type="checkbox" id="pt-flex">Data flexível</label></div>
-        <div class="fld"><label>Pessoas</label><div class="pt-step"><button type="button" data-ps="-1" aria-label="Menos">−</button><b id="pt-n">2</b><button type="button" data-ps="1" aria-label="Mais">+</button></div><label class="check" style="margin-top:8px"><input type="checkbox" id="pt-transp">Precisamos de transporte</label></div>
-      </div>
+      <div class="fld"><label>Quando?</label><div class="pt-when">
+        <label class="pt-date empty" id="pt-dwrap"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span id="pt-dtxt">Escolher o dia</span><input type="date" id="pt-data" aria-label="Data do passeio"></label>
+        <button type="button" class="pt-tg" id="pt-flexb" aria-pressed="false">Data flexível</button><input type="checkbox" id="pt-flex" hidden>
+      </div></div>
+      <div class="fld"><label>Grupo</label><div class="pt-row">
+        <div class="pt-box"><span>Pessoas</span><div class="pt-step"><button type="button" data-ps="-1" aria-label="Menos">−</button><b id="pt-n">2</b><button type="button" data-ps="1" aria-label="Mais">+</button></div></div>
+        <button type="button" class="pt-tg" id="pt-trb" aria-pressed="false">🚐 Precisamos de transporte</button><input type="checkbox" id="pt-transp" hidden>
+      </div></div>
       <div class="grid2"><div class="fld"><label for="pt-nome">Seu nome</label><input id="pt-nome" autocomplete="name" placeholder="Como o Bruno te chama"></div><div class="fld"><label for="pt-wa">Seu WhatsApp</label><input id="pt-wa" class="wa-mask" type="tel" inputmode="tel" autocomplete="tel" maxlength="16" placeholder="(31) 99999-9999"></div></div>
       <div class="fld"><label for="pt-obs">Algo mais? <span class="opt-t">(opcional)</span></label><textarea id="pt-obs" placeholder="Crianças no grupo, alguém sem preparo, aniversário, almoço…"></textarea></div>
       <p class="err" id="pt-err" hidden></p>
@@ -3303,7 +3321,10 @@ $("bform").addEventListener("submit",function(e){e.preventDefault();var nome=$("
   fill();window.__ptFill=fill;$("pt-data").min=minDate();var n=2,tipo="Família ou amigos";
   $("pt-tipo").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;tipo=b.dataset.v;this.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",x===b)})});
   $("ptform").addEventListener("click",function(e){var b=e.target.closest("[data-ps]");if(!b)return;n=Math.max(1,Math.min(200,n+ +b.dataset.ps));$("pt-n").textContent=n});
-  $("pt-flex").addEventListener("change",function(){if(this.checked)$("pt-data").value=""});$("pt-data").addEventListener("change",function(){if(this.value)$("pt-flex").checked=false});
+  function sync(){var dt=$("pt-data").value,fl=$("pt-flex").checked;$("pt-dtxt").textContent=dt?shortD(dt):"Escolher o dia";$("pt-dwrap").classList.toggle("empty",!dt);$("pt-dwrap").classList.toggle("on",!!dt);$("pt-flexb").setAttribute("aria-pressed",fl);$("pt-trb").setAttribute("aria-pressed",$("pt-transp").checked)}
+  $("pt-flex").addEventListener("change",function(){if(this.checked)$("pt-data").value="";sync()});$("pt-data").addEventListener("change",function(){if(this.value)$("pt-flex").checked=false;sync()});$("pt-data").addEventListener("input",function(){if(this.value)$("pt-flex").checked=false;sync()});
+  $("pt-flexb").addEventListener("click",function(){var c=$("pt-flex");c.checked=!c.checked;c.dispatchEvent(new Event("change",{bubbles:true}))});
+  $("pt-trb").addEventListener("click",function(){var c=$("pt-transp");c.checked=!c.checked;c.dispatchEvent(new Event("change",{bubbles:true}));sync()});
   function msg(){var nome=$("pt-nome").value.trim(),dt=$("pt-data").value,fl=$("pt-flex").checked,t=tourBy(sel.value);
     var L=["Olá, "+CONFIG.nome+"! Quero contratar um guia particular 🌿","","👥 Para: "+tipo+" ("+n+" pessoa"+(n>1?"s":"")+")","🥾 Trilha: "+(t?t.nome:"me sugiram a melhor para o grupo"),"📅 Data: "+(fl?"flexível, me sugiram":dt?fmtDate(parseD(dt)):"…"),"🚐 Transporte: "+($("pt-transp").checked?"precisamos":"não precisa")];
     var ob=$("pt-obs").value.trim();if(ob)L.push("📝 "+ob);L.push("","Nome: "+(nome||"…"),"","Pode me passar um orçamento?");return L.join("\n")}
