@@ -1318,7 +1318,7 @@ body.pg-trilhas .forestband,body.pg-trilhas .trail-side{display:none!important}
 .pgt-back:hover{transform:translateX(-3px)}
 .pgt-back b{width:28px;height:28px;border-radius:50%;background:#F2C14E;color:#3A2A05;display:grid;place-items:center;font-size:16px}
 .pgt-end{display:flex;justify-content:center;margin-top:22px}.pgt-end .pgt-back{margin:0}
-.pgt-f{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.pgt-f{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}.pgt-f[hidden]{display:none}
 .pgt-f button{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:9px 14px;font:inherit;font-size:14px;font-weight:700;cursor:pointer}
 .pgt-f button[aria-pressed="true"]{background:#0E2A2E;border-color:#0E2A2E;color:#fff}
 .pgt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
@@ -1669,6 +1669,18 @@ html.adm-only body{overflow:hidden}
 .pt-row{display:grid;grid-template-columns:auto 1fr;gap:8px}
 .pt-box{display:flex;align-items:center;justify-content:space-between;gap:14px;border:1.5px solid var(--line);border-radius:14px;padding:6px 8px 6px 14px;font-weight:700;font-size:14px;background:#fff}
 @media (max-width:440px){.pt-row{grid-template-columns:1fr}.pt-tg{text-align:left}.pt-when .pt-tg{flex:1 1 auto}}
+
+/* trilhas em breve */
+.soon-b{display:inline-block;background:#E8B23A;color:#1d1503;font-weight:900;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;border-radius:999px;padding:5px 11px}
+.opn-soon{display:flex;align-items:center;gap:14px 18px;flex-wrap:wrap;background:#fff;border-radius:20px;padding:16px 18px;box-shadow:inset 0 0 0 1px var(--line),0 18px 40px -30px rgba(14,42,46,.45)}
+.opn-soon .soon-tx{flex:1 1 240px;min-width:0}.opn-soon b{display:block;font-size:17px}.opn-soon .soon-tx span{color:var(--ink-soft);font-size:14px}
+.opn-soon .btn{flex:none}
+.pc-soon{text-align:center;padding:6px 4px;margin:auto 0}.pc-soon h3{font-size:24px;margin:10px 0 6px}.pc-soon p{color:var(--ink-soft);margin:0 auto 14px;max-width:420px;font-size:14.5px}
+.pc-soon-b{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.pg-soon{grid-column:1/-1;background:#fff;border-radius:24px;padding:28px 22px;text-align:center;box-shadow:inset 0 0 0 1px var(--line)}.pg-soon h3{font-size:28px;margin:12px 0 8px}.pg-soon p{color:var(--ink-soft);max-width:480px;margin:0 auto 18px}
+#tm-frame.soon .pm-hint,#tm-frame.soon .tm3-l,#tm-frame.soon .tmap-l{display:none!important}
+#tm-frame.soon .tmap::after{content:"EM BREVE";position:absolute;left:50%;top:38%;transform:translate(-50%,-50%) rotate(-6deg);background:rgba(14,42,46,.82);color:#fff;font-family:"Big Shoulders Display",sans-serif;font-weight:900;font-size:clamp(28px,6vw,54px);letter-spacing:.08em;padding:.15em .6em;border-radius:14px;border:2px solid #E8B23A;pointer-events:none;z-index:4;backdrop-filter:blur(4px)}
+@media (max-width:600px){.opn-soon .btn{width:100%}}
 </style>
 </head>
 <body>
@@ -2090,20 +2102,7 @@ var CONFIG = {
 /* Dados iniciais — o guia troca tudo isso pela Área do guia */
 var DEFAULT_DATA = {
   whatsapp: "31996485236",
-  tours: [
-    {id:"cachoeira", nome:"Imersão Cachoeira Escondida", nivel:1, dur:"1 dia", dist:"8 km", saida:"7h", tempo:2, want:["water","calm"], preco:"", ponto:"", ativo:true,
-     txt:"Trilha pela mata fechada até uma sequência de poços e quedas d'água. Tempo de sobra para nadar, relaxar e almoçar na pedra.", tags:["Banho de cachoeira","Almoço na trilha"], art:"fall", datas:[]},
-    {id:"amanhecer", nome:"Trilha do Amanhecer", nivel:2, dur:"Meio dia", dist:"6 km", saida:"4h30", tempo:1, want:["view"], preco:"", ponto:"", ativo:true,
-     txt:"Subida no escuro, de lanterna, para ver o sol nascer do mirante acima das nuvens. Café quentinho lá em cima.", tags:["Nascer do sol","Mirante"], art:"sunrise", datas:[]},
-    {id:"travessia", nome:"Travessia da Serra", nivel:3, dur:"2 dias", dist:"22 km", saida:"6h", tempo:3, want:["adv","view","water"], preco:"", ponto:"", ativo:true,
-     txt:"Dois dias cruzando a serra, com acampamento sob as estrelas, cachoeiras no caminho e trechos de pedra para quem curte desafio.", tags:["Acampamento","Céu estrelado"], art:"ridge", datas:[]},
-    {id:"floresta", nome:"Banho de Floresta", nivel:1, dur:"Meio dia", dist:"3 km", saida:"8h", tempo:1, want:["calm"], preco:"", ponto:"", ativo:true,
-     txt:"Caminhada lenta, sem pressa, com pausas de respiração e silêncio na mata. Para desligar a cabeça e voltar leve.", tags:["Desacelerar","Iniciantes"], art:"forest", datas:[]},
-    {id:"noturna", nome:"Noturna da Lua Cheia", nivel:1, dur:"Noite", dist:"4 km", saida:"18h", tempo:1, want:["adv","calm"], preco:"", ponto:"", ativo:true,
-     txt:"A mata muda de voz quando escurece. Trilha guiada na lua cheia, com sons da noite, vaga-lumes e céu aberto.", tags:["Lua cheia","Vaga-lumes"], art:"night", datas:[]},
-    {id:"cachoeiras3", nome:"Circuito das Três Quedas", nivel:2, dur:"1 dia", dist:"14 km", saida:"6h30", tempo:2, want:["water","adv"], preco:"", ponto:"", ativo:true,
-     txt:"Um dia inteiro ligando três cachoeiras diferentes: um poço para nadar, uma queda alta e um tobogã natural.", tags:["3 cachoeiras","Dia inteiro"], art:"falls3", datas:[]}
-  ]
+  tours: []
 };
 var DATA = JSON.parse(JSON.stringify(DEFAULT_DATA));
 var TOURS = DATA.tours;
@@ -2134,6 +2133,9 @@ $("yr").textContent=new Date().getFullYear();
 /* ---------- carregar / salvar dados ---------- */
 function applyData(d){
   if(!d||!Array.isArray(d.tours))return;
+  // tira as trilhas de exemplo que vinham no site (só se ninguém mudou o nome delas)
+  var DEMO={cachoeira:"Imersão Cachoeira Escondida",amanhecer:"Trilha do Amanhecer",travessia:"Travessia da Serra",floresta:"Banho de Floresta",noturna:"Noturna da Lua Cheia",cachoeiras3:"Circuito das Três Quedas"};
+  d.tours=d.tours.filter(function(t){return !(t&&DEMO[t.id]&&DEMO[t.id]===t.nome)});
   DATA=d;TOURS=DATA.tours;
   TOURS.forEach(function(t){t.datas=t.datas||[];t.tags=t.tags||[];t.want=t.want||[];if(t.ativo==null)t.ativo=true});
 }
@@ -2330,7 +2332,7 @@ function tmDraw(i,anim){var d=TM.paths[i];if(!d)return;var dr=$("tm-draw"),d2=$(
   if(!anim||reduce){dr.style.strokeDasharray="none";w.setAttribute("cx",TM.pts[i][0]);w.setAttribute("cy",TM.pts[i][1]-0);w.setAttribute("opacity",1);return}
   var t0=performance.now(),dur=Math.min(1800,700+len*1.4);w.setAttribute("opacity",1);
   (function step(n){var p=Math.min(1,(n-t0)/dur),e=1-Math.pow(1-p,3);dr.style.strokeDasharray=len;dr.style.strokeDashoffset=len*(1-e);var pt=dr.getPointAtLength(len*e);w.setAttribute("cx",pt.x);w.setAttribute("cy",pt.y);if(p<1)TM.walkRAF=requestAnimationFrame(step)})(t0)}
-function renderPostcard(anim){var L=activeTours(),t=L[CROSS.i],pc=$("postcard");if(!pc)return;if(!t){pc.innerHTML='<p class="help">Nenhuma expedição cadastrada ainda.</p>';return}
+function renderPostcard(anim){var L=activeTours(),t=L[CROSS.i],pc=$("postcard");if(!pc)return;if(!t){pc.innerHTML='<div class="pc-soon"><span class="soon-b">Em breve</span><h3>Trilhas a caminho</h3><p>As primeiras saídas estão sendo preparadas. Enquanto isso, o Bruno monta um passeio só para o seu grupo.</p><div class="pc-soon-b"><button type="button" class="btn btn-amber" data-soon>Quero ser avisado</button><button type="button" class="btn btn-ghost" data-hire>Pedir guia particular</button></div></div>';return}
   var km=kmOf(t),up=upcoming(t).slice(0,4);
   var html='<div class="pc-art">'+art(t.art,CROSS.i+1)+'<span class="hand">'+(up.length?'próxima saída: '+shortD(up[0].d):'datas em breve')+'</span>'+(km!=null?'<span class="pc-stamp"><span><b>'+fmtKm(km)+'</b><small>km de trilha</small></span></span>':'')+'</div>'+
     '<div class="pc-body"><h3>'+esc(t.nome)+'</h3><button type="button" class="pc-more" data-more="1">'+($("postcard").classList.contains("open")?'Fechar detalhes ▴':'Ver detalhes, perfil e datas ▾')+'</button>'+(t.txt?'<p class="pc-d">'+esc(t.txt)+'</p>':'')+
@@ -3342,11 +3344,14 @@ $("bform").addEventListener("submit",function(e){e.preventDefault();var nome=$("
 function openDeps(){var o=[];activeTours().forEach(function(t,i){upcoming(t).forEach(function(x){if(+x.vagas!==0)o.push({t:t,i:i,d:x})})});return o.sort(function(a,b){return a.d.d<b.d.d?-1:1})}
 function renderOpen(){var box=$("opn");if(!box)return;var O=openDeps(),M=["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
   var nOpen=activeTours().filter(function(t){return upcoming(t).some(function(x){return +x.vagas!==0})}).length;
-  var g=$("h3go-t");if(g){g.textContent=nOpen?"Ver trilhas com saída aberta ("+nOpen+")":"Ver todas as trilhas";g.parentNode.classList.toggle("has",!!nOpen)}
+  var none=!activeTours().length;
+  var g=$("h3go-t");if(g){g.textContent=none?"Trilhas em breve":nOpen?"Ver trilhas com saída aberta ("+nOpen+")":"Ver todas as trilhas";g.parentNode.classList.toggle("has",!!nOpen)}
+  var fr=$("tm-frame");if(fr)fr.classList.toggle("soon",none);
+  if(none){box.innerHTML='<div class="opn-soon"><span class="soon-b">Em breve</span><div class="soon-tx"><b>Novas trilhas chegando</b><span>O Bruno está fechando o calendário de saídas. Entre na lista e seja avisado primeiro.</span></div><button type="button" class="btn btn-amber" data-soon>Quero ser avisado</button></div>';return}
   if(!O.length){box.innerHTML='<div class="opn-none"><span>Nenhuma saída aberta agora. Escolha uma trilha no mapa e entre na fila de espera.</span><a href="/trilhas" data-pg="trilhas">Ver todas as trilhas →</a></div>';return}
   box.innerHTML='<div class="opn-h"><b>Saídas abertas</b><a href="/trilhas" data-pg="trilhas">Ver todas as trilhas →</a></div><div class="opn-l">'+O.slice(0,8).map(function(o){var d=parseD(o.d.d);return '<button type="button" class="opn-c" data-book="'+o.t.id+'" data-date="'+o.d.d+'"><span class="opn-d"><b>'+d.getDate()+'</b><small>'+M[d.getMonth()]+'</small></span><span><strong>'+esc(o.t.nome)+'</strong><em>'+[kmOf(o.t)!=null?fmtKm(kmOf(o.t))+" km":"",o.d.vagas?o.d.vagas+" vagas":"vagas abertas"].filter(Boolean).join(" · ")+'</em></span><span class="go">Reservar</span></button>'}).join("")+'</div>'}
 var PGF="open";
-function renderTrailPage(){var g=$("pgt-grid");if(!g)return;var L=activeTours().map(function(t,i){return {t:t,i:i,up:upcoming(t).filter(function(x){return +x.vagas!==0})}});
+function renderTrailPage(){var pf=$("pgt-f");if(pf)pf.hidden=!activeTours().length;var g=$("pgt-grid");if(!g)return;var L=activeTours().map(function(t,i){return {t:t,i:i,up:upcoming(t).filter(function(x){return +x.vagas!==0})}});
   var fs=[["open","Com saída aberta"],["all","Todas"],["1","Leves"],["2","Moderadas"],["3","Desafiadoras"]];
   if(!L.some(function(x){return x.up.length})&&PGF==="open")PGF="all";
   $("pgt-f").innerHTML=fs.map(function(f){return '<button type="button" data-f="'+f[0]+'" aria-pressed="'+(PGF===f[0])+'">'+f[1]+'</button>'}).join("");
@@ -3354,7 +3359,7 @@ function renderTrailPage(){var g=$("pgt-grid");if(!g)return;var L=activeTours().
   g.innerHTML=L.map(function(x){var t=x.t,km=kmOf(t),op=x.up.length;return '<article class="tcard'+(op?" open":"")+'"><div class="ta">'+art(t.art,x.i+30)+'<span class="tbadge'+(op?"":" soon")+'">'+(op?"Saída aberta":"Em breve")+'</span>'+(km!=null?'<span class="tkm">'+fmtKm(km)+' km</span>':'')+'</div>'+
     '<div class="tb"><h3>'+esc(t.nome)+'</h3>'+(t.txt?'<p>'+esc(t.txt)+'</p>':'')+'<div class="tf"><span>'+LVL[t.nivel]+'</span>'+(t.dur?'<span>'+esc(t.dur)+'</span>':'')+(t.saida?'<span>saída '+esc(t.saida)+'</span>':'')+(t.preco?'<span>'+esc(t.preco)+'</span>':'')+'</div>'+
     (op?'<div class="td">'+upcoming(t).slice(0,6).map(function(d){var full=+d.vagas===0;return '<button type="button" data-book="'+t.id+'" data-date="'+d.d+'" '+(full?"disabled":"")+'>'+shortD(d.d)+(full?" · esgotado":d.vagas?" · "+d.vagas+" vagas":"")+'</button>'}).join("")+'</div>':'')+
-    '<button type="button" class="btn '+(op?"btn-amber":"btn-ghost")+'" data-book="'+t.id+'">'+(op?"Reservar":"Quero ser avisado")+'</button></div></article>'}).join("")||'<p class="help">Nenhuma trilha neste filtro.</p>'}
+    '<button type="button" class="btn '+(op?"btn-amber":"btn-ghost")+'" data-book="'+t.id+'">'+(op?"Reservar":"Quero ser avisado")+'</button></div></article>'}).join("")||(activeTours().length?'<p class="help">Nenhuma trilha neste filtro.</p>':'<div class="pg-soon"><span class="soon-b">Em breve</span><h3>Novas trilhas chegando</h3><p>O Bruno está fechando o calendário de saídas. Deixe seu contato e seja avisado primeiro, ou peça um passeio só para o seu grupo.</p><div class="pc-soon-b"><button type="button" class="btn btn-amber" data-soon>Quero ser avisado</button><button type="button" class="btn btn-ghost" data-hire>Pedir guia particular</button></div></div>')}
 $("pgt-f").addEventListener("click",function(e){var b=e.target.closest("[data-f]");if(!b)return;PGF=b.dataset.f;renderTrailPage()});
 function route(){var on=/^\/trilhas\/?$/i.test(location.pathname)||location.hash==="#/trilhas";document.body.classList.toggle("pg-trilhas",on);$("pg-trilhas").hidden=!on;if(on){renderTrailPage();if(!route.tk){route.tk=1;track("trilhas")}document.title="Trilhas · Leopardos das Montanhas";window.scrollTo(0,0);if(window.__lenis)window.__lenis.scrollTo(0,{immediate:true})}else document.title="Leopardos das Montanhas · Trilhas e Cachoeiras"}
 document.addEventListener("click",function(e){var a=e.target.closest("[data-pg]");if(!a)return;e.preventDefault();var p=a.dataset.pg;
@@ -3369,8 +3374,9 @@ var W_KEY="leopardo-espera-v1",WAIT={ppl:1,tour:null};
 function waitLocal(){try{return JSON.parse(localStorage.getItem(W_KEY)||"[]")}catch(e){return []}}
 function waitLocalSet(a){try{localStorage.setItem(W_KEY,JSON.stringify(a))}catch(e){}}
 function fmtWa(v){var n=String(v||"").replace(/\D/g,"");if(n.length>11&&n.slice(0,2)==="55")n=n.slice(2);if(n.length===11)return "("+n.slice(0,2)+") "+n.slice(2,7)+"-"+n.slice(7);if(n.length===10)return "("+n.slice(0,2)+") "+n.slice(2,6)+"-"+n.slice(6);return v}
+document.addEventListener("click",function(e){if(e.target.closest&&e.target.closest("[data-soon]")){e.preventDefault();openWait({id:"proximas",nome:"Próximas trilhas",datas:[],ativo:true})}});
 function openWait(t){WAIT.tour=t;WAIT.ppl=Math.max(1,((window.__grp||{}).a||0)+((window.__grp||{}).c||0))||1;
-  $("wm-in").innerHTML='<span class="hand">fila de espera</span><h3 id="wm-t">'+esc(t.nome)+'</h3><p class="help">Essa trilha ainda não tem data. Deixe seu nome e WhatsApp: quando o Bruno abrir as datas, você é avisado primeiro.</p>'+
+  $("wm-in").innerHTML='<span class="hand">'+(t.id==="proximas"?"em breve":"fila de espera")+'</span><h3 id="wm-t">'+esc(t.nome)+'</h3><p class="help">'+(t.id==="proximas"?"O Bruno está montando o calendário de trilhas. Deixe seu nome e WhatsApp: quando abrir, você é avisado primeiro.":"Essa trilha ainda não tem data. Deixe seu nome e WhatsApp: quando o Bruno abrir as datas, você é avisado primeiro.")+'</p>'+
     '<div class="fld"><label for="w-nome">Seu nome</label><input id="w-nome" autocomplete="name" maxlength="60" placeholder="Como o Bruno te chama"></div>'+
     '<div class="fld"><label for="w-wa">Seu WhatsApp</label><input id="w-wa" type="tel" inputmode="tel" autocomplete="tel" maxlength="16" placeholder="(31) 99999-9999"></div>'+
     '<div class="fld"><label>Quantas pessoas</label><div class="w-ppl"><button type="button" data-wp="-1" aria-label="Menos">−</button><b id="w-ppl">'+WAIT.ppl+'</b><button type="button" data-wp="1" aria-label="Mais">+</button></div></div>'+
