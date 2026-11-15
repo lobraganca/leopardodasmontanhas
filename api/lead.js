@@ -33,7 +33,7 @@ export default async function handler(req, res) {
       para: clean(b.para, 40), transp: clean(b.transp, 3), obs: clean(b.obs, 300), cidadeAprox: clean(city, 60),
       estadoAprox: clean(req.headers["x-vercel-ip-country-region"], 10), atualizado: String(now),
     };
-    const cmds = [["HSET", key, ...Object.entries(fields).flat()], ["HSETNX", key, "criado", String(now)], ["EXPIRE", key, TTL], ["ZADD", "leo:leads", now, id]];
+    const cmds = [["HSET", key, ...Object.entries(fields).flat()], ["HSETNX", key, "criado", String(now)], ["EXPIRE", key, TTL], ["ZADD", "leo:leads2", now, id]];
     if (b.sent) cmds.push(["HSET", key, "enviado", "sim"], ["HSETNX", key, "enviadoEm", String(now)]);
     await pipeline(cmds);
     return res.status(204).end();

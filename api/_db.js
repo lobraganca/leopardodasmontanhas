@@ -55,7 +55,7 @@ export function dayKey(d = new Date()) {
 
 // Prefixo das chaves da contagem de visitas. Trocar o número zera a contagem
 // (os pedidos usam "leo:lead" e não são afetados).
-export const V = "leo:c1:";
+export const V = "leo:c2:"; // zerada em 15/11/2026
 
 // Limite de tentativas de login guardado no banco (vale para todos os servidores da Vercel ao mesmo tempo).
 // Retorna quantas falhas recentes esse IP teve; registrar=true soma mais uma.

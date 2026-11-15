@@ -49,7 +49,7 @@ async function main(req, res) {
   }
   if (body.acao === "apagar" && body.id) {
     const id = String(body.id).replace(/[^\w-]/g, "").slice(0, 40);
-    await pipeline([["DEL", `leo:lead:${id}`], ["ZREM", "leo:leads", id], ["SET", `leo:leadx:${id}`, "1", "EX", 60 * 60 * 24 * 120]]);
+    await pipeline([["DEL", `leo:lead:${id}`], ["ZREM", "leo:leads2", id], ["SET", `leo:leadx:${id}`, "1", "EX", 60 * 60 * 24 * 120]]);
     return res.status(200).json({ ok: true });
   }
 
@@ -63,7 +63,7 @@ async function main(req, res) {
   const per = ["day", "dev", "src", "pais", "estado", "cidade", "ret", "trilha_trilhas", "trilha_reserva", "trilha_espera"];
   const cmds = [["PFCOUNT", `${V}uniq:all`], ["PFCOUNT", ...days.map((d) => `${V}uniq:${d}`)]];
   days.forEach((d) => { cmds.push(["PFCOUNT", `${V}uniq:${d}`]); per.forEach((p) => cmds.push(["HGETALL", `${V}${p}:${d}`])); });
-  cmds.push(["ZREVRANGE", "leo:leads", 0, 199]);
+  cmds.push(["ZREVRANGE", "leo:leads2", 0, 199]);
   const r = await pipeline(cmds);
 
   const out = { de: from, ate: to, pessoasTotal: +r[0] || 0, pessoasPeriodo: +r[1] || 0, dias: [], dispositivo: {}, origem: {}, pais: {}, estado: {}, cidade: {}, retorno: {}, trilhaVista: {}, trilhaReserva: {}, trilhaEspera: {} };

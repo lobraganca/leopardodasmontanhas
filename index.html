@@ -3558,7 +3558,7 @@ function renderLogin(){
   $("ad-login").onsubmit=function(e){e.preventDefault();var p=$("ad-pin").value.trim();if(!p)return;
     var u=($("ad-user").value||"").trim().toLowerCase();if(u!==CONFIG.adminUser){$("ad-lerr").textContent="Login ou senha incorretos.";$("ad-lerr").hidden=false;return}
     if(!CONFIG.api&&p!==CONFIG.adminTestPass){$("ad-lerr").textContent="Login ou senha incorretos.";$("ad-lerr").hidden=false;return}
-    adminUser=u;checkPin(p).then(function(r){if(r&&r.ok){adminPin=p;renderAdmin()}else{$("ad-lerr").textContent=(r&&r.msg)||"Login ou senha incorretos.";$("ad-lerr").hidden=false}}).catch(function(){$("ad-lerr").textContent="Sem conexão. Tente de novo.";$("ad-lerr").hidden=false})};
+    adminUser=u;checkPin(p).then(function(r){if(r&&r.ok){adminPin=p;try{localStorage.setItem("leo-nocount","1")}catch(e){}renderAdmin()}else{$("ad-lerr").textContent=(r&&r.msg)||"Login ou senha incorretos.";$("ad-lerr").hidden=false}}).catch(function(){$("ad-lerr").textContent="Sem conexão. Tente de novo.";$("ad-lerr").hidden=false})};
 }
 function markDirty(){dirty=true;$("ad-save").classList.add("pulse");$("ad-status").textContent="Alterações não salvas"}
 function renderAdmin(){
@@ -3671,7 +3671,7 @@ $("ad-save").onclick=function(){if(window.__vbusy){toast("Espere o vídeo termin
    CONTADOR DE ACESSOS + PEDIDOS (aparece na aba "Acessos" da Área do guia)
    Não guarda IP. Só funciona com o banco ligado na Vercel.
    ============================================================ */
-function trackOn(){return !!CONFIG.api&&!IS_ADM}
+function trackOn(){var off=false;try{off=localStorage.getItem("leo-nocount")==="1"}catch(e){}return !!CONFIG.api&&!IS_ADM&&!off}
 function visitorId(){try{var v=localStorage.getItem("leo-vid");if(!v){v=Date.now().toString(36)+Math.random().toString(36).slice(2,10);localStorage.setItem("leo-vid",v)}return v}catch(e){return "x"+Math.random().toString(36).slice(2)}}
 function beacon(url,o){var body=JSON.stringify(o);try{if(navigator.sendBeacon&&navigator.sendBeacon(url,new Blob([body],{type:"text/plain"})))return}catch(e){}try{fetch(url,{method:"POST",body:body,keepalive:true,headers:{"Content-Type":"text/plain"}})}catch(e){}}
 function track(e,t){if(!trackOn())return;var r="";try{r=document.referrer?new URL(document.referrer).hostname:""}catch(x){}
@@ -3739,7 +3739,7 @@ function drawAcessos(){var j=ACC.data,box=$("ad-body");var sum=function(k){retur
   var cid=function(x){var a=x.split("|");return a[0]+(a[1]?" - "+a[1]:"")};
   var src={direto:"Digitou o endereço / direto",instagram:"Instagram",facebook:"Facebook",google:"Google",whatsapp:"Link no WhatsApp"};
   h+='<div class="acc-grid">'+top(j.origem,"De onde vieram",function(x){return src[x]||x})+top(j.dispositivo,"Aparelho",function(x){return x==="celular"?"📱 Celular":"💻 Computador"})+top(j.cidade,"Cidades",cid)+top(j.estado,"Estados",cid)+top(j.trilhaReserva,"Trilhas mais pedidas")+top(j.trilhaEspera,"Fila de espera por trilha")+'</div>';
-  h+='<p class="help" style="font-size:12.5px">'+(tr?tr+" abertura"+(tr>1?"s":"")+" da página de trilhas no período. ":"")+'Cidade e estado são aproximados (vêm da internet da pessoa). O contador não guarda IP nem dados pessoais de quem só visita.</p>';
+  h+='<p class="help" style="font-size:12.5px">'+(tr?tr+" abertura"+(tr>1?"s":"")+" da página de trilhas no período. ":"")+'Cidade e estado são aproximados (vêm da internet da pessoa). Só contam visitas do Brasil; robôs, acessos de fora e testes de quem faz o site ficam de fora. Este aparelho também não entra na contagem, porque já entrou na Área do guia. O contador não guarda IP nem dados pessoais de quem só visita.</p>';
   box.innerHTML=h}
 $("ad-body").addEventListener("click",function(e){if(adminTab!=="acessos")return;var lw=e.target.closest("[data-pcw]");if(lw){var idw=lw.dataset.pcw;(ACC.data.pedidos||[]).forEach(function(p){if(p.id===idw&&!p.contatado){p.contatado=String(Date.now());apiStats({acao:"contatado",id:idw,valor:true}).catch(function(){})}});setTimeout(drawAcessos,300);return}var b=e.target.closest("button");if(!b)return;
   if(b.dataset.per){ACC.per=+b.dataset.per;renderAcessos();return}

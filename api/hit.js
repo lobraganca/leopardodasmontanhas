@@ -24,13 +24,16 @@ export default async function handler(req, res) {
       cmds.push(["PFADD", `${V}uniq:${day}`, vid], ["EXPIRE", `${V}uniq:${day}`, TTL], ["PFADD", `${V}uniq:all`, vid]);
       const device = /Mobi|Android|iPhone/i.test(ua) ? "celular" : "computador";
       const ref = String(body?.r || "").replace(/^www\./, "").slice(0, 60);
+      // visitas vindas do painel da Vercel, do GitHub ou do Claude são testes de quem faz o site: não contam
+      if (/vercel\.com|github\.com|claude\.ai|anthropic|localhost/.test(ref)) return res.status(204).end();
       const src = !ref ? "direto" : /instagram|linktr/.test(ref) ? "instagram" : /facebook|fb\./.test(ref) ? "facebook" : /google/.test(ref) ? "google" : /whatsapp|wa\.me/.test(ref) ? "whatsapp" : /wikiloc|strava|alltrails/.test(ref) ? "apps de trilha" : ref.includes("vercel.app") || ref.includes("leopardo") ? null : ref;
       let city = dec(req.headers["x-vercel-ip-city"]), region = dec(req.headers["x-vercel-ip-country-region"]), country = dec(req.headers["x-vercel-ip-country"]);
       const tz = String(body?.tz || "").slice(0, 40);
       const tzBR = /^America\/(Sao_Paulo|Bahia|Fortaleza|Recife|Belem|Maceio|Araguaina|Manaus|Cuiaba|Campo_Grande|Porto_Velho|Boa_Vista|Rio_Branco|Santarem|Eirunepe|Noronha)$/.test(tz);
       if (country && country !== "BR") {
-        if (!tz || /^(UTC|Etc\/|GMT)/.test(tz)) return res.status(204).end();
-        if (tzBR) { country = "BR"; region = ""; city = ""; }
+        // acesso de fora do Brasil: só conta se o aparelho estiver no fuso do Brasil (ex.: VPN, roaming)
+        if (!tzBR) return res.status(204).end();
+        country = "BR"; region = ""; city = "";
       }
       const add = (name, field) => { if (field) cmds.push(["HINCRBY", k(name), field, 1], ["EXPIRE", k(name), TTL]); };
       add("dev", device);
