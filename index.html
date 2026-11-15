@@ -1634,6 +1634,21 @@ footer .credit .wrap{display:flex!important;flex-direction:column;align-items:ce
 /* /adm: só a Área do guia (o site fica parado por trás) */
 html.adm-only body > *:not(#admin):not(#toast):not(.ins-m){display:none!important}
 html.adm-only body{overflow:hidden}
+
+/* topo da Área do guia no celular: respeita a barra do iPhone, salvar fixo embaixo */
+@media (max-width:700px){
+  .ad-top{padding:10px 14px 8px;padding-top:calc(10px + env(safe-area-inset-top,0px));gap:8px 10px;position:relative}
+  .ad-top .brand{flex:1;min-width:0}
+  .ad-top .brand img{width:34px;height:34px}
+  .ad-top .brand b{font-size:17px;white-space:nowrap}
+  #ad-x{margin-left:0;flex:none;width:40px;height:40px}
+  .ad-inst{padding:7px 11px;font-size:12.5px}
+  #ad-tabs{order:5;width:100%;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:2px -14px 0;padding:0 14px;width:calc(100% + 28px)}
+  #ad-tabs::-webkit-scrollbar{display:none}
+  #ad-save{position:fixed;left:14px;right:14px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:5;margin:0;padding:14px;font-size:15px;box-shadow:0 12px 30px -10px rgba(0,0,0,.35)}
+  .ad-scroll{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+  .ad-top .brand,#ad-x,.ad-inst{order:1}
+}
 </style>
 </head>
 <body>
