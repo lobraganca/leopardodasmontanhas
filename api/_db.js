@@ -6,9 +6,11 @@ const clean = (v) => String(v || "").trim()
   .replace(/^["'`]+|["'`]+$/g, "").trim();
 
 function resolve() {
-  let url = clean(process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL);
-  let token = clean(process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN);
-  const redisUrl = clean(process.env.REDIS_URL || process.env.KV_URL);
+  // aceita qualquer prefixo que a Vercel tenha usado (KV_, STORAGE_, UPSTASH_REDIS_ ...)
+  const anyEnv = (re) => { const k = Object.keys(process.env).find((n) => re.test(n) && !/READ_ONLY/.test(n)); return k ? process.env[k] : ""; };
+  let url = clean(process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL || anyEnv(/(^|_)REST_API_URL$|REDIS_REST_URL$/));
+  let token = clean(process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN || anyEnv(/(^|_)REST_API_TOKEN$|REDIS_REST_TOKEN$/));
+  const redisUrl = clean(process.env.REDIS_URL || process.env.KV_URL || anyEnv(/^(STORAGE|KV|REDIS)[A-Z_]*_URL$/));
   // Se colaram a URL redis(s)://default:TOKEN@host:6379, dá para tirar dela a URL REST e o token.
   const fromRedis = (u) => {
     const m = /^rediss?:\/\/[^:]*:([^@]+)@([^:/]+)/.exec(u);
