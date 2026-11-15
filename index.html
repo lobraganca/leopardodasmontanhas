@@ -1713,6 +1713,13 @@ html.adm-only body{overflow:hidden}
 .reel.loading::before{content:"";position:absolute;left:50%;top:50%;width:36px;height:36px;margin:-18px;border-radius:50%;border:3px solid rgba(255,255,255,.35);border-top-color:#fff;animation:rlspin .8s linear infinite;z-index:3}
 @keyframes rlspin{to{transform:rotate(360deg)}}
 .reel .rl-frame{z-index:3}
+
+/* botão de play grande no meio do card */
+.reel .rl-play{right:auto!important;top:50%!important;left:50%;transform:translate(-50%,-50%)!important;width:72px!important;height:72px!important;background:rgba(255,255,255,.94);color:#0E2A2E;box-shadow:0 10px 30px -8px rgba(0,0,0,.55),0 0 0 6px rgba(255,255,255,.22);transition:transform .25s,opacity .25s}
+.reel .rl-play svg{width:28px;height:28px;margin-left:4px}
+.reel:hover .rl-play{transform:translate(-50%,-50%) scale(1.08)!important}
+.reel.playing .rl-play{opacity:0}
+.reel.playing.paused .rl-play{opacity:1}
 </style>
 </head>
 <body>
