@@ -1758,6 +1758,20 @@ html.adm-only body{overflow:hidden}
 .ad-wq-p .btn{padding:8px 12px;font-size:12.5px;text-decoration:none;white-space:nowrap}
 .ad-wq-p.done{opacity:.6}
 @media (max-width:560px){.ad-wq-p{flex-wrap:wrap}.ad-wq-p span{flex:1 1 60%}.ad-wq-p .btn{order:3;flex:1 1 100%;text-align:center}}
+
+/* rodapé do cartão da trilha (valor + botões) */
+.dchip{text-transform:none!important}
+.pc-dl{display:block;font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#7C8F8B;margin:10px 0 6px}
+.pc-pt{margin:0 0 6px;font-size:13.5px;color:var(--ink-soft)}
+.pc-pr{margin-top:14px;padding-top:12px;border-top:1px dashed #E2DAC6;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.pc-pr small{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#7C8F8B}
+.pc-pr b{font-family:var(--display);font-weight:900;font-size:26px;line-height:1.1;color:#0E2A2E;word-break:break-word}
+.pc-act{display:flex;align-items:center;gap:10px;margin-top:12px}
+.pc-act .btn{flex:1;min-width:0;justify-content:center;white-space:nowrap;padding:14px 16px;font-size:15px}
+.pc-act .pc-arr{flex:none}
+.pc-body>.pc-pt,.pc-body>.pc-dl,.pc-body>.pc-pr,.pc-body>.pc-act,.pc-body>.pc-dates,.pc-body>h3,.pc-body>.pc-d{grid-column:1/-1;min-width:0}
+.pc-body{min-width:0}.pc-body h3{overflow-wrap:anywhere}
+@media (max-width:420px){.pc-act .btn{font-size:14px;padding:13px 10px}}
 </style>
 </head>
 <body>
@@ -2415,10 +2429,11 @@ function renderPostcard(anim){var L=activeTours(),t=L[CROSS.i],pc=$("postcard");
   var km=kmOf(t),up=upcoming(t).slice(0,4);
   var html='<div class="pc-art">'+art(t.art,CROSS.i+1)+'<span class="hand">'+(up.length?'próxima saída: '+dLbl(up[0]):'datas em breve')+'</span>'+(km!=null?'<span class="pc-stamp"><span><b>'+fmtKm(km)+'</b><small>km de trilha</small></span></span>':'')+'</div>'+
     '<div class="pc-body"><h3>'+esc(t.nome)+'</h3><button type="button" class="pc-more" data-more="1">'+($("postcard").classList.contains("open")?'Fechar detalhes ▴':'Ver detalhes, perfil e datas ▾')+'</button>'+(t.txt?'<p class="pc-d">'+esc(t.txt)+'</p>':'')+
-    '<div class="pc-facts"><span>'+lvl(t.nivel)+LVL[t.nivel]+'</span>'+(t.dur?'<span>⏱ '+esc(t.dur)+'</span>':'')+(t.dist?'<span>↔ '+esc(t.dist)+'</span>':'')+(t.saida?'<span>📍 '+esc(t.saida)+'</span>':'')+'</div>'+
+    '<div class="pc-facts"><span>'+lvl(t.nivel)+LVL[t.nivel]+'</span>'+(t.dist?'<span>↔ '+esc(t.dist)+'</span>':'')+(t.saida?'<span>🕖 saída '+esc(t.saida)+'</span>':'')+'</div>'+(t.ponto?'<p class="pc-pt">📍 Encontro: '+esc(t.ponto)+'</p>':'')+
     '<div class="pc-prof"><small>perfil da subida</small>'+profile(t)+'</div>'+
-    '<div class="pc-dates">'+(up.length?up.map(function(x){var full=+x.vagas===0;return '<button type="button" class="chip dchip'+(full?" full":"")+'" data-book="'+t.id+'" data-date="'+x.d+'" '+(full?"disabled":"")+'>'+dLbl(x)+""+'</button>'}).join(""):'<span class="chip chip-soon">Datas em breve</span>'+(t.tags||[]).map(function(x){return '<span class="chip">'+esc(x)+'</span>'}).join(""))+'</div>'+
-    '<div class="pc-foot"><div class="pc-arr"><button type="button" data-pn="-1" aria-label="Trilha anterior">‹</button><span>'+(CROSS.i+1)+'/'+L.length+'</span><button type="button" data-pn="1" aria-label="Próxima trilha">›</button></div>'+(t.preco?'<div class="pc-price"><small>por pessoa</small>'+esc(t.preco)+'</div>':'')+'<button type="button" class="btn '+(up.length?'btn-amber':'btn-ghost')+'" data-book="'+t.id+'">'+(up.length?'Quero essa':'Quero ser avisado')+'</button></div></div>'+
+    (up.length?'<small class="pc-dl">Datas abertas · toque para reservar</small>':'')+'<div class="pc-dates">'+(up.length?up.map(function(x){var full=+x.vagas===0;return '<button type="button" class="chip dchip'+(full?" full":"")+'" data-book="'+t.id+'" data-date="'+x.d+'" '+(full?"disabled":"")+'>'+dLbl(x)+""+'</button>'}).join(""):'<span class="chip chip-soon">Datas em breve</span>'+(t.tags||[]).map(function(x){return '<span class="chip">'+esc(x)+'</span>'}).join(""))+'</div>'+
+    (t.preco?'<div class="pc-pr"><small>Valor</small><b>'+esc(t.preco)+'</b></div>':'')+
+    '<div class="pc-act">'+(L.length>1?'<div class="pc-arr"><button type="button" data-pn="-1" aria-label="Trilha anterior">‹</button><span>'+(CROSS.i+1)+'/'+L.length+'</span><button type="button" data-pn="1" aria-label="Próxima trilha">›</button></div>':'')+'<button type="button" class="btn '+(up.length?'btn-amber':'btn-ghost')+'" data-book="'+t.id+'">'+(up.length?'Reservar pelo WhatsApp':'Quero ser avisado')+'</button></div></div>'+
     '<div class="pc-nav"><button type="button" data-pn="-1" aria-label="Expedição anterior">‹</button><button type="button" data-pn="1" aria-label="Próxima expedição">›</button></div>';
   if(anim&&!reduce){pc.classList.remove("flip");void pc.offsetWidth;pc.classList.add("flip");setTimeout(function(){pc.innerHTML=html},250)}else pc.innerHTML=html}
 function crossGo(i){var L=activeTours();if(!L.length)return;CROSS.i=(i+L.length)%L.length;
