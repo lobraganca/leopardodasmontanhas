@@ -1598,6 +1598,7 @@ footer .credit .wrap{display:flex!important;flex-direction:column;align-items:ce
 /* leopardo andando em cima do título */
 .hero h1{margin-top:.38em}
 @media (max-width:600px){.hero h1{margin-top:36px}}
+@media (max-width:600px) and (max-height:790px){.hero h1{margin-top:32px}.hero .hero-sub{font-size:14px;line-height:1.45;margin-top:8px}.h3-go{margin-top:4px}.h3-ui{padding-top:78px}}
 .hero h1 .leo-ln{display:inline-block;position:relative}
 .leo{position:absolute;left:0;bottom:calc(100% - .14em);width:max(1.2em,88px);height:auto;aspect-ratio:236/110;pointer-events:none;will-change:transform;z-index:2;filter:drop-shadow(0 3px 6px rgba(0,0,0,.35))}
 .leo-s{display:block;width:100%;height:100%;overflow:visible}
@@ -2983,9 +2984,9 @@ function initHero3D(){
   labels.addEventListener("click",function(e){var p=e.target.closest(".h3-pin");if(p)select(+p.dataset.k)});
   // câmera orbital
   var target=new T.Vector3(0,4,0),tgtTo=target.clone(),theta=-.5,phi=.95,rad=330,radTo=rad,auto=false,dragging=false,lx=0,ly=0,decided=false,sx=0,sy=0;
-  function homeRad(){return window.innerWidth<700?500:(window.innerWidth<1100?380:330)}
+  function homeRad(){return window.innerWidth<700?535:(window.innerWidth<1100?380:330)}
   function resize(){var r=cv.getBoundingClientRect(),W=r.width,Hh=r.height;renderer.setSize(W,Hh,false);cam.aspect=W/Hh;
-    if(W<700)cam.setViewOffset(W,Hh,0,-Hh*.25,W,Hh);else if(W>=1000)cam.setViewOffset(W,Hh,-W*.19,-Hh*.12,W,Hh);else cam.setViewOffset(W,Hh,0,-Hh*.12,W,Hh);
+    if(W<700)cam.setViewOffset(W,Hh,0,-Hh*(Hh<790?.335:.3),W,Hh);else if(W>=1000)cam.setViewOffset(W,Hh,-W*.19,-Hh*.12,W,Hh);else cam.setViewOffset(W,Hh,0,-Hh*.12,W,Hh);
     cam.updateProjectionMatrix();if(!sel){radTo=homeRad();rad=radTo}}
   window.addEventListener("resize",resize);resize();
   function hideHint(){}
