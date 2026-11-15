@@ -1645,9 +1645,10 @@ html.adm-only body{overflow:hidden}
   .ad-inst{padding:7px 11px;font-size:12.5px}
   #ad-tabs{order:5;width:100%;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:2px -14px 0;padding:0 14px;width:calc(100% + 28px)}
   #ad-tabs::-webkit-scrollbar{display:none}
-  #ad-save{position:fixed;left:14px;right:14px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:5;margin:0;padding:14px;font-size:15px;box-shadow:0 12px 30px -10px rgba(0,0,0,.35)}
-  .ad-scroll{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
-  .ad-top .brand,#ad-x,.ad-inst{order:1}
+  #ad-save{order:1;margin:0;padding:9px 13px;font-size:13px;flex:none;white-space:nowrap}
+  .ad-top .brand,#ad-x{order:1}
+  .ad-top .brand b{font-size:15px;overflow:hidden;text-overflow:ellipsis}
+  .ad-inst{display:none!important}
 }
 </style>
 </head>
