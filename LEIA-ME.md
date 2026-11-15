@@ -21,6 +21,12 @@ Lá o guia:
 - troca o **WhatsApp** que recebe as reservas (já vem com (31) 99648-5236);
 - vê a **Fila de espera**: quem tocou em "Quero ser avisado" numa trilha sem data deixa nome, WhatsApp e quantas pessoas. Na aba, as pessoas aparecem separadas por trilha, na ordem em que entraram. O botão **Avisar** abre o WhatsApp da pessoa com a mensagem pronta (editável) e marca como avisado; **Avisar próximo** vai chamando um por um.
 
+## App no celular
+A Área do guia pode ser instalada como app. Abra **www.leopardosdasmontanhas.com.br/adm** no celular:
+- **Android (Chrome):** aparece o cartão **Use como app** → toque em **Instalar**. Se não aparecer, toque nos ⋮ → **Instalar app**.
+- **iPhone (Safari):** toque em **📲 Instalar app** e siga: botão **Compartilhar** → **Adicionar à Tela de Início** → **Adicionar**.
+O ícone **Leopardos** fica junto dos outros apps e abre direto na Área do guia, em tela cheia. Arquivos: `adm.webmanifest`, `adm-sw.js` e os ícones `adm-*.png`.
+
 ## Ligar o banco na Vercel (uma vez só, uns 3 minutos)
 Sem o banco, o site funciona em **modo de teste**: o que se salva fica só no aparelho de quem editou e a aba Acessos fica desligada.
 1. Abra https://vercel.com/marketplace/upstash e toque em **Install** (ou **Add Integration**).
