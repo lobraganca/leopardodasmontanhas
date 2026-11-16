@@ -3911,5 +3911,16 @@ if(IS_ADM){var _l=$("loader");if(_l)_l.remove();document.body.classList.add("rea
 loadData().then(function(){if(!DATA.videos)DATA.videos=JSON.parse(JSON.stringify(DEFAULT_VIDEOS));refreshAll();if(!$("admin").hidden&&adminPin)renderAdmin();else if(location.hash==="#area-do-guia"&&!IS_ADM)openAdmin()});
 
 </script>
+<script>
+/* sempre a versão mais nova: se o site foi atualizado enquanto a aba estava guardada, recarrega sozinho */
+(function(){if(location.protocol!=="https:")return;var mine=null,hidAt=0,adm=/^\/adm\/?$/.test(location.pathname);
+function ver(){return fetch("/api/versao?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(j){return j&&j.v||null}).catch(function(){return null})}
+ver().then(function(v){mine=v});
+function check(){ver().then(function(v){if(v&&mine&&v!==mine){if(adm){mine=v;return}location.reload()}})}
+window.addEventListener("pageshow",function(e){if(e.persisted)location.reload()});
+document.addEventListener("visibilitychange",function(){if(document.hidden){hidAt=Date.now();return}if(Date.now()-hidAt>5000)check()});
+window.addEventListener("focus",function(){if(Date.now()-hidAt>5000&&hidAt)check()});
+})();
+</script>
 </body>
 </html>

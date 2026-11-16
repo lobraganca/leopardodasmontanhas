@@ -1,5 +1,5 @@
 // App da Área do guia: permite instalar no celular e abrir mesmo sem internet (mostra a última cópia).
-const CACHE = "leo-adm-v1";
+const CACHE = "leo-adm-v2";
 const SHELL = ["/adm", "/adm-icon-192.png", "/adm.webmanifest"];
 
 self.addEventListener("install", (e) => {
